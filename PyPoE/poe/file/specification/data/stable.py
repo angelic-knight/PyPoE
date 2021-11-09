@@ -147,6 +147,22 @@ specification = Specification({
                 name='Message',
                 type='ref|string',
             ),
+            Field(
+                name='Unknown0',
+                type='byte',
+            ),
+            Field(
+                name='Unknown1',
+                type='byte',
+            ),
+            Field(
+                name='Unknown2',
+                type='byte',
+            ),
+            Field(
+                name='Unknown3',
+                type='byte',
+            ),
         ),
     ),
     'AchievementItems.dat': File(
@@ -229,6 +245,22 @@ specification = Specification({
             Field(
                 name='HideoutName',
                 type='ref|string',
+            ),
+            Field(
+                name='Unknown0',
+                type='byte',
+            ),
+            Field(
+                name='Unknown2',
+                type='byte',
+            ),
+            Field(
+                name='Unknown3',
+                type='byte',
+            ),
+            Field(
+                name='Unknown4',
+                type='byte',
             ),
         ),
     ),
@@ -5260,23 +5292,6 @@ specification = Specification({
                 name='AddModOrEnchantment',
                 fields=('AddMod','AddEnchantment'),
             )
-        ),
-    ),
-    'CraftingBenchSortCategories.dat': File(
-        fields=(
-            Field(
-                name='Id',
-                type='ref|string',
-                unique=True,
-            ),
-            Field(
-                name='Key0',
-                type='ulong',
-            ),
-            Field(
-                name='IsVisible',
-                type='bool',
-            ),
         ),
     ),
     'CraftingBenchSortCategories.dat': File(
@@ -11640,31 +11655,19 @@ specification = Specification({
             ),
         ),
     ),
-    'HellscapeAOReplacements.dat': File(
+    'HideoutDoodads.dat': File(
         fields=(
             Field(
-                name='Unknown0',
-                type='ref|string',
-            ),
-            Field(
-                name='HASH32',
-                type='int',
-            ),
-            Field(
-                name='Unknown1',
-                type='ref|string',
-            ),
-        ),
-    ),
-    'HellscapeAreaPacks.dat': File(
-        fields=(
-            Field(
-                name='Key0',
+                name='BaseItemTypesKey',
                 type='ulong',
+                key='BaseItemTypes.dat',
+                unique=True,
             ),
             Field(
-                name='Keys0',
-                type='ref|list|ulong',
+                name='Variation_AOFiles',
+                type='ref|list|ref|string',
+                file_path=True,
+                file_ext='.ao',
             ),
             Field(
                 name='IsNonMasterDoodad',
@@ -18778,7 +18781,7 @@ specification = Specification({
                 file_ext='.dds',
             ),
             Field(
-                name='Stats',
+                name='StatsKeys',
                 type='ref|list|ulong',
                 key='Stats.dat',
             ),
@@ -18809,7 +18812,7 @@ specification = Specification({
                 type='ref|string',
             ),
             Field(
-                name='Characters',
+                name='CharactersKeys',
                 type='ref|list|ulong',
                 key='Characters.dat',
             ),
@@ -18830,7 +18833,7 @@ specification = Specification({
                 type='bool',
             ),
             Field(
-                name='AchievementItem',
+                name='AchievementItemsKey',
                 type='ulong',
                 key='AchievementItems.dat',
             ),
@@ -18848,7 +18851,7 @@ specification = Specification({
                 type='bool',
             ),
             Field(
-                name='ReminderStrings',
+                name='Reminder_ClientStringsKeys',
                 type='ref|list|ulong',
                 key='ClientStrings.dat',
             ),
@@ -18869,12 +18872,12 @@ specification = Specification({
                 type='int',
             ),
             Field(
-                name='PassiveSkillBuffs',
+                name='PassiveSkillBuffsKeys',
                 type='ref|list|ulong',
                 key='BuffTemplates.dat',
             ),
             Field(
-                name='GrantedEffectsPerLevel',
+                name='GrantedEffectsPerLevelKey',
                 type='ulong',
                 key='GrantedEffectsPerLevel.dat',
             ),
@@ -18910,8 +18913,8 @@ specification = Specification({
                 fields=('Stat1Value', 'Stat2Value', 'Stat3Value', 'Stat4Value', 'Stat5Value'),
             ),
             VirtualField(
-                name='StatsZip',
-                fields=('Stats', 'StatValues'),
+                name='Stats',
+                fields=('StatsKeys', 'StatValues'),
                 zip=True,
             ),
         ),
