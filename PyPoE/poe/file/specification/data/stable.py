@@ -18662,7 +18662,7 @@ specification = Specification({
     'PassiveSkillMasteryEffects.dat': File(
         fields=(
             Field(
-                name='ID',
+                name='Id',
                 type='ref|string',
             ),
             Field(
@@ -18670,7 +18670,7 @@ specification = Specification({
                 type='int',
             ),
             Field(
-                name='Stats',
+                name='StatsKeys',
                 type='ref|list|ulong',
                 key='Stats.dat',
             ),
@@ -18687,11 +18687,22 @@ specification = Specification({
                 type='int',
             ),
         ),
+        virtual_fields=(
+            VirtualField(
+                name='StatValues',
+                fields=('Stat1Value', 'Stat2Value', 'Stat3Value'),
+            ),
+            VirtualField(
+                name='Stats',
+                fields=('StatsKeys', 'StatValues'),
+                zip=True,
+            ),
+        ),
     ),
     'PassiveSkillMasteryGroups.dat': File(
         fields=(
             Field(
-                name='ID',
+                name='Id',
                 type='ref|string',
             ),
             Field(
