@@ -347,24 +347,29 @@ class ExporterHandler(BaseHandler):
 
         """
         # By id
-        a_id = sub_parser.add_parser(
-            'id',
-            help='Extract via a list of internal ids.'
-        )
-        self.add_default_parsers(
-            parser=a_id,
-            cls=cls,
-            func=cls.by_id,
-            *args,
-            **kwargs
-        )
-        a_id.add_argument(
-            'id',
-            help='Internal id. Can be specified multiple times.',
-            nargs='+',
-        )
+        self.add_id_subparser_filters(sub_parser, cls, *args, **kwargs)
 
         # by name
+        self.add_name_subparser_filters(sub_parser, cls, *args, **kwargs)
+
+        # by row ID
+        self.add_rowid_subparser_filters(sub_parser, cls, *args, **kwargs)
+    
+    def add_name_subparser_filters(self, sub_parser, cls, *args, **kwargs):
+        """
+        Adds default sub parsers for id, name and rowid.
+
+        Parameters
+        ----------
+        sub_parser
+        cls: object
+            Expected to have the methods:
+            by_name  - handling for name based searching
+
+        Returns
+        -------
+
+        """
         a_name = sub_parser.add_parser(
             'name',
             help='Extract via a list of names.'
@@ -383,7 +388,21 @@ class ExporterHandler(BaseHandler):
             nargs='+',
         )
 
-        # by row ID
+    def add_rowid_subparser_filters(self, sub_parser, cls, *args, **kwargs):
+        """
+        Adds default sub parsers for id, name and rowid.
+
+        Parameters
+        ----------
+        sub_parser
+        cls: object
+            Expected to have the methods:
+            by_rowid - handling for rowid based searching
+
+        Returns
+        -------
+
+        """
         a_rid = sub_parser.add_parser(
             'rowid',
             help='Extract via rowid in the primary dat file.'
@@ -408,6 +427,39 @@ class ExporterHandler(BaseHandler):
             help='Ending index',
             type=int,
         )
+        
+    def add_id_subparser_filters(self, sub_parser, cls, *args, **kwargs):
+        """
+        Adds default sub parsers for id, name and rowid.
+
+        Parameters
+        ----------
+        sub_parser
+        cls: object
+            Expected to have the methods:
+            by_id    - handling for id based searching
+
+        Returns
+        -------
+
+        """
+        a_id = sub_parser.add_parser(
+            'id',
+            help='Extract via a list of internal ids.'
+        )
+        self.add_default_parsers(
+            parser=a_id,
+            cls=cls,
+            func=cls.by_id,
+            *args,
+            **kwargs
+        )
+        a_id.add_argument(
+            'id',
+            help='Internal id. Can be specified multiple times.',
+            nargs='+',
+        )
+
 
     def add_default_parsers(self, parser, cls, func=None, handler=None,
                             wiki=True, wiki_handler=None):

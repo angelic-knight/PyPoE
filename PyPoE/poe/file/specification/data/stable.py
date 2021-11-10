@@ -18727,8 +18727,9 @@ specification = Specification({
                 type='bool',
             ),
             Field(
-                name='Key0',
+                name='SoundEffect',
                 type='ulong',
+                key='SoundEffects.dat'
             ),
         ),
     ),
