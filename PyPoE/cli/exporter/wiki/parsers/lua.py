@@ -1439,7 +1439,7 @@ class CraftingBenchParser(GenericLuaParser):
         #     'key': 'mod_group',
         #     'default': '',
         # }),
-        ('CraftingItemClassCategoriesKeys', {
+        ('CraftingItemClassCategories', {
             'key': 'item_class_categories',
             'value': lambda v: [k['Text'] for k in v],
         }),
