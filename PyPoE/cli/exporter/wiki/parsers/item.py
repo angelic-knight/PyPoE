@@ -574,7 +574,7 @@ class ItemsParser(SkillParserShared):
         'Ritual': '3.13.0',
         'Ultimatum': '3.14.0',
         'Expedition': '3.15.0',
-        'Scourge': '3.16.0'
+        'Hellscape': '3.16.0', # AKA Scourge
     }
 
     _IGNORE_DROP_LEVEL_CLASSES = (
