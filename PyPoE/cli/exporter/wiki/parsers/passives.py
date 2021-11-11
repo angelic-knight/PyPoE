@@ -271,6 +271,7 @@ class PassiveSkillParser(parser.BaseParser):
         for passive in passives:
             data = OrderedDict()
 
+            # Copy over simple fields from the .dat
             for row_key, copy_data in self._COPY_KEYS.items():
                 value = passive[row_key]
 
@@ -286,7 +287,12 @@ class PassiveSkillParser(parser.BaseParser):
                 if fmt:
                     value = fmt(value)
                 data[copy_data['template']] = value
+            
+            # Flag if it's an atlas skill
+            if passive['Id'].startswith('atlas'):
+                data['is_atlas_passive'] = True
 
+            # Handle icon paths
             if passive['Icon_DDSFile']:
                 icon = passive['Icon_DDSFile'].split('/')
                 if passive['Icon_DDSFile'].startswith(
@@ -297,13 +303,14 @@ class PassiveSkillParser(parser.BaseParser):
                         data['icon'] = '%s (%s)' % (icon[-1], icon[-2])
                 else:
                     data['icon'] = icon[-1]
-            #atlas_start_node doesn't have an icon path
+            # atlas_start_node doesn't have an icon path
             else:
                 data['icon'] = ''
                 warnings.warn(f"Icon path file not found for {passive['Id']}: {passive['Name']}")
 
             data['icon'] = data['icon'].replace('.dds', '')
 
+            # Handle Stats
             stat_ids = []
             values = []
 
@@ -321,7 +328,7 @@ class PassiveSkillParser(parser.BaseParser):
 
             data['stat_text'] = '<br>'.join(self._get_stats(
                 stat_ids, values,
-                translation_file=self.get_translation_file(passive['Id'])
+                translation_file=get_translation_file(passive['Id'])
             ))
 
             # For now this is being added to the stat text
@@ -384,13 +391,20 @@ class PassiveSkillParser(parser.BaseParser):
             )
 
         return r
-    
-    def get_translation_file(self, passive_id: str):
-        if passive_id.startswith('atlas'):
-            return 'atlas_stat_descriptions.txt'
-        else:
-            return 'passive_skill_stat_descriptions.txt'
 
 # =============================================================================
 # Functions
 # =============================================================================
+
+def get_translation_file(passive_id: str):
+    '''
+    Determines which translation file should be used based on the passive skill ID.
+
+    Parameters
+    ----------
+    passive_id: the Id of the passive skill
+    '''
+    if passive_id.startswith('atlas'):
+        return 'atlas_stat_descriptions.txt'
+    else:
+        return 'passive_skill_stat_descriptions.txt'
