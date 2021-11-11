@@ -230,12 +230,12 @@ class PassiveSkillParser(parser.BaseParser):
 
         passives = self._apply_filter(parsed_args, passives)
 
-        console('Found %s passives. Removing Royale passives...' % len(passives))
+        console(f'Found {len(passives)} passives. Removing Royale passives...')
         passives = [
             passive for passive in passives
             if not passive['Id'].startswith('royale')
         ]
-        console('%s passives left for processing.' % len(passives))
+        console(f'{len(passives)} passives left for processing.')
 
         if not passives:
             console(
