@@ -230,6 +230,13 @@ class PassiveSkillParser(parser.BaseParser):
 
         passives = self._apply_filter(parsed_args, passives)
 
+        console('Found %s passives. Removing Royale passives...' % len(passives))
+        passives = [
+            passive for passive in passives
+            if not passive['Id'].startswith('royale')
+        ]
+        console('%s passives left for processing.' % len(passives))
+
         if not passives:
             console(
                 'No passives found for the specified parameters. Quitting.',
@@ -314,7 +321,7 @@ class PassiveSkillParser(parser.BaseParser):
 
             data['stat_text'] = '<br>'.join(self._get_stats(
                 stat_ids, values,
-                translation_file='passive_skill_stat_descriptions.txt'
+                translation_file=self.get_translation_file(passive['Id'])
             ))
 
             # For now this is being added to the stat text
@@ -377,6 +384,12 @@ class PassiveSkillParser(parser.BaseParser):
             )
 
         return r
+    
+    def get_translation_file(self, passive_id: str):
+        if passive_id.startswith('atlas'):
+            return 'atlas_stat_descriptions.txt'
+        else:
+            return 'passive_skill_stat_descriptions.txt'
 
 # =============================================================================
 # Functions
