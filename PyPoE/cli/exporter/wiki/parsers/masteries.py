@@ -67,7 +67,7 @@ class EffectWikiCondition(parser.WikiCondition):
         'main_page',
     )
 
-    NAME = 'Mastery Effect' # Seems to be the wiki template that will get called
+    NAME = 'Mastery effect' # Seems to be the wiki template that will get called
     ADD_INCLUDE = False
     INDENT = 36
 
@@ -76,7 +76,7 @@ class GroupWikiCondition(parser.WikiCondition):
         'main_page',
     )
 
-    NAME = 'Mastery Group' # Seems to be the wiki template that will get called
+    NAME = 'Mastery group' # Seems to be the wiki template that will get called
     ADD_INCLUDE = False
     INDENT = 36
 
@@ -96,7 +96,7 @@ class MasteryCommandHandler(ExporterHandler):
             'effects',
             help='Mastery exporter for mastery effects (i.e. the bonus you can actually pick)',
         )
-        mastery_eff_parser.set_defaults(func=lambda args: parser.print_help())
+        mastery_eff_parser.set_defaults(func=lambda args: mastery_eff_parser.print_help())
         mastery_eff_sub = mastery_eff_parser.add_subparsers()
 
         self.add_default_subparser_filters(
@@ -109,7 +109,7 @@ class MasteryCommandHandler(ExporterHandler):
             'groups',
             help='Mastery exporter for mastery groups',
         )
-        mastery_grp_parser.set_defaults(func=lambda args: parser.print_help())
+        mastery_grp_parser.set_defaults(func=lambda args: mastery_grp_parser.print_help())
         mastery_grp_sub = mastery_grp_parser.add_subparsers()
 
         self.add_default_subparser_filters(
@@ -238,7 +238,7 @@ class MasteryEffectParser(parser.BaseParser):
                 stat_ids.append(stat['Id'])
                 data[f'stat{one_based_stat_index}_id'] = stat['Id']
                 values.append(mastery[f'Stat{one_based_stat_index}Value'])
-                data['stat{one_based_stat_index}_value'] = mastery[f'Stat{one_based_stat_index}Value']
+                data[f'stat{one_based_stat_index}_value'] = mastery[f'Stat{one_based_stat_index}Value']
 
             data['stat_text'] = '<br>'.join(self._get_stats(
                 stat_ids, values,
