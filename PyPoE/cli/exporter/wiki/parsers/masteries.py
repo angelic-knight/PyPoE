@@ -153,6 +153,8 @@ class MasteryEffectParser(parser.BaseParser):
 
     _MAX_STAT_ID = 3 # How many stats each mastery effect can have.
 
+    # Here we list out fields from the .dat file, and translate them to template parameters.
+    # More complicated handling can be done in the body of export.
     _COPY_KEYS = OrderedDict((
         ('Id', {
             'template': 'id',
@@ -332,6 +334,8 @@ class MasteryGroupParser(parser.BaseParser):
 
         # Read the .dat file
         self.rr[self._MASTERY_FILE_NAME]
+        
+        self._image_init(parsed_args)
 
         console(f'Found {len(mastery_grps)}, parsing...')
 
@@ -353,6 +357,39 @@ class MasteryGroupParser(parser.BaseParser):
                 if fmt:
                     value = fmt(value)
                 data[copy_data['template']] = value
+
+            # Parse and clean up icon path
+            icon_field = 'InactiveIcon'
+            if mastery_grp[icon_field]:
+                icon = mastery_grp[icon_field].split('/')
+                if mastery_grp[icon_field].startswith(
+                        'Art/2DArt/SkillIcons/passives/'):
+                    if icon[-2] == 'MasteryPassiveIcons':
+                        data['icon'] = icon[-1]
+                        pass
+                    else:
+                        warnings.warn(f"Icon path is not as expected for {mastery_grp['Id']}")
+                else:
+                    data['icon'] = icon[-1]
+                    pass
+            else:
+                data['icon'] = ''
+                warnings.warn(f"Icon path file not found for {mastery_grp['Id']}: {mastery_grp['Name']}")
+
+            data['icon'] = data['icon'].replace('.dds', '')
+
+            # extract icons if specified
+            if parsed_args.store_images:
+                file_name = data['icon'] + ' mastery icon'
+                print(self._img_path)
+                dds = os.path.join(self._img_path, file_name + '.dds')
+                png = os.path.join(self._img_path, file_name + '.png')
+                if not (os.path.exists(dds) or os.path.exists(png)):
+                    self._write_dds(
+                        data=self.file_system.get_file(mastery_grp[icon_field]),
+                        out_path=dds,
+                        parsed_args=parsed_args,
+                    )
 
             cond = GroupWikiCondition(
                 data=data,
