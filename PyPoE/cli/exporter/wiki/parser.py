@@ -1534,7 +1534,7 @@ class BaseParser:
         )
 
     def _write_dds(self, data, out_path, parsed_args):
-        out_path = fix_path(out_path)
+        out_path = fix_path(out_path.replace('"', "'", 2))
         with open(out_path, 'wb') as f:
             f.write(self.file_system.extract_dds(data))
 

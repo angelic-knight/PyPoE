@@ -79,7 +79,7 @@ def _type_factory(data_file, data_mapping, row_index=True, function=None,
                 ]
         except KeyError:
             warnings.warn(
-                f"Missing {data_file} info for \"{base_item_type['Name']}\" at {base_item_type.rowid}"
+                'Missing %s info for "%s"' % (data_file, base_item_type['Name'])
             )
             return fail_condition
 
@@ -3730,8 +3730,8 @@ class ItemsParser(SkillParserShared):
                     if not f(self, infobox, base_item_type):
                         fail = True
                         console(
-                            f'Required extra info for item "{name}" with class id '
-                            f'"{cls_id}" not found. Skipping.',
+                            'Required extra info for item "%s" with class id '
+                            '"%s" not found. Skipping.' % (name, cls_id),
                             msg=Msg.error)
                         break
                 if fail:
@@ -3810,22 +3810,17 @@ class ItemsParser(SkillParserShared):
         #Don't print anything if not running in the rowid mode.
         if not set(['start', 'end']).issubset(vars(parsed_args).keys()):
             return
-        
-        if not parsed_args.start is None and not parsed_args.end is None:
-            start = parsed_args.start
+        try:
             export_row_count = parsed_args.end - parsed_args.start
-            #If we're printing less than 100 rows, print every rowid
-            if export_row_count <= 100:
-                print_granularity = 1
-            else:
-                print_granularity = export_row_count//100
-        #If row IDs weren't specified, just print the rowid every 500 rows
+        except TypeError:
+            export_row_count = parsed_args.start
+        #If we're printing less than 100 rows, print every rowid
+        if export_row_count <= 100:
+            print_granularity = 1
         else:
-            start = 0
-            print_granularity = 500
-
+            print_granularity = export_row_count//100
         
-        item_offset = base_item_type.rowid - start
+        item_offset = base_item_type.rowid - parsed_args.start
         if (item_offset == 0) or item_offset % print_granularity == 0:
             console(f"Processing item with rowid {base_item_type.rowid}: {base_item_type['Name']}")
         return
@@ -4102,7 +4097,7 @@ class ItemsParser(SkillParserShared):
                 out_file='map_%s.txt' % name,
                 wiki_page=[
                     {
-                        'page': f'Map:{name}',
+                        'page': name,
                         'condition': cond,
                     }
                 ],
