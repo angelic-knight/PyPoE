@@ -873,6 +873,8 @@ class ItemsParser(SkillParserShared):
             'Metadata/Items/Hideout/HideoutCharredSkeleton' : " (hideout decoration)",
             'Metadata/Items/Hideout/HideoutVaalWhispySmoke' : " (hideout decoration)",
             'Metadata/Items/Hideout/HideoutLionStatueKneeling': '',
+            'Metadata/Items/Hideout/HideoutChurchRuins': ' (hideout decoration)',
+            'Metadata/Items/Hideout/HideoutIncaLetter': ' (hideout decoration)',
 
             # =================================================================
             # invitations
