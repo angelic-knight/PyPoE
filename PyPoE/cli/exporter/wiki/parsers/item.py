@@ -2460,6 +2460,40 @@ class ItemsParser(SkillParserShared):
         'Metadata/Items/Labyrinth/OfferingToTheGoddess',
 
         #
+        # Non-stackable incubators before 3.16
+        #
+        'Metadata/Items/Currency/CurrencyIncubationEssence',
+        'Metadata/Items/Currency/CurrencyIncubationCurrency',
+        'Metadata/Items/Currency/CurrencyIncubationUniques',
+        'Metadata/Items/Currency/CurrencyIncubationMaps',
+        'Metadata/Items/Currency/CurrencyIncubationUniqueMaps',
+        'Metadata/Items/Currency/CurrencyIncubationAbyss',
+        'Metadata/Items/Currency/CurrencyIncubationFragments',
+        'Metadata/Items/Currency/CurrencyIncubationScarabs',
+        'Metadata/Items/Currency/CurrencyIncubationEssenceHigh',
+        'Metadata/Items/Currency/CurrencyIncubationFossils',
+        'Metadata/Items/Currency/CurrencyIncubationPerandus',
+        'Metadata/Items/Currency/CurrencyIncubationDivination',
+        'Metadata/Items/Currency/CurrencyIncubationTalismans',
+        'Metadata/Items/Currency/CurrencyIncubationLabyrinthHelm',
+        'Metadata/Items/Currency/CurrencyIncubationArmour6Linked',
+        'Metadata/Items/Currency/CurrencyIncubationCurrencyMid',
+        'Metadata/Items/Currency/CurrencyIncubationUniqueLeague',
+        'Metadata/Items/Currency/CurrencyIncubationArmourShaperElder',
+        'Metadata/Items/Currency/CurrencyIncubationWeaponShaperElder',
+        'Metadata/Items/Currency/CurrencyIncubationTrinketShaperElder',
+        'Metadata/Items/Currency/CurrencyIncubationMapElder',
+        'Metadata/Items/Currency/CurrencyIncubationBreach',
+        'Metadata/Items/Currency/CurrencyIncubationHarbingerShard',
+        'Metadata/Items/Currency/CurrencyIncubationGem',
+        'Metadata/Items/Currency/CurrencyIncubationGeneric',
+        'Metadata/Items/Currency/CurrencyIncubationGemLow',
+        'Metadata/Items/Currency/CurrencyIncubationBestiary',
+        'Metadata/Items/Currency/CurrencyIncubationBlight',
+        'Metadata/Items/Currency/CurrencyIncubationMetamorph',
+        'Metadata/Items/Currency/CurrencyIncubationDelirium',
+
+        #
         # Quest items
         #
         'Metadata/Items/QuestItems/ShaperMemoryFragments/ShaperMemoryFragment1_1',
@@ -3356,7 +3390,7 @@ class ItemsParser(SkillParserShared):
         'HideoutDoodad': (_type_currency, _type_hideout_doodad),
         'Microtransaction': (_type_currency, _type_microtransaction),
         'DivinationCard': (_type_currency, ),
-        'Incubator': (_type_currency, _type_incubator),
+        'IncubatorStackable': (_type_currency, _type_incubator),
         'HarvestSeed': (_type_currency, _type_harvest_seed),
         'HarvestPlantBooster': (_type_currency, _type_harvest_plant_booster),
         # Labyrinth stuff
@@ -3514,6 +3548,14 @@ class ItemsParser(SkillParserShared):
             self, infobox, base_item_type, rr, language):
         return base_item_type['Name']
 
+    def _conflict_incubator(
+            self, infobox, base_item_type, rr, language):
+        return
+
+    def _conflict_incubator_stackable(
+            self, infobox, base_item_type, rr, language):
+        return base_item_type['Name']
+
     _conflict_resolver_map = {
         'Active Skill Gem': _conflict_active_skill_gems,
         'QuestItem': _conflict_quest_items,
@@ -3528,6 +3570,8 @@ class ItemsParser(SkillParserShared):
         'DelveStackableSocketableCurrency':
             _conflict_delve_stackable_socketable_currency,
         'AtlasRegionUpgradeItem': _conflict_atlas_region_upgrade,
+        'Incubator': _conflict_incubator,
+        'IncubatorStackable': _conflict_incubator_stackable,
     }
 
     def _parse_class_filter(self, parsed_args):
