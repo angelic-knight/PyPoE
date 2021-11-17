@@ -41,7 +41,6 @@ from functools import partialmethod
 
 # Self
 from PyPoE.poe.constants import RARITY
-from PyPoE.cli.exporter.wiki.parsers.itemconstants import MAPS_IN_SERIES_BUT_NOT_ON_ATLAS, MAPS_TO_SKIP_COLORING, MAPS_TO_SKIP_COMPOSITING
 from PyPoE.poe.file.dat import RelationalReader
 from PyPoE.poe.file.ot import OTFile
 from PyPoE.poe.sim.formula import gem_stat_requirement, GemTypes
@@ -69,7 +68,7 @@ def _apply_column_map(infobox, column_map, list_object):
 
 
 def _type_factory(data_file, data_mapping, row_index=True, function=None,
-                  fail_condition=False, skip_warning=False):
+                  fail_condition=False):
     def func(self, infobox, base_item_type):
         try:
             if data_file == 'BaseItemTypes.dat':
@@ -79,10 +78,9 @@ def _type_factory(data_file, data_mapping, row_index=True, function=None,
                     base_item_type.rowid if row_index else base_item_type['Id']
                 ]
         except KeyError:
-            if not skip_warning:
-                warnings.warn(
-                    f'Missing {data_file} info for "{base_item_type["Name"]}"'
-                )
+            warnings.warn(
+                f"Missing {data_file} info for \"{base_item_type['Name']}\" at {base_item_type.rowid}"
+            )
             return fail_condition
 
         _apply_column_map(infobox, data_mapping, data)
@@ -124,10 +122,9 @@ class WikiCondition(parser.WikiCondition):
         'name_list',
         'quality',
 
-        # Icons & Visuals
+        # Icons
         'inventory_icon',
         'alternate_art_inventory_icons',
-        'frame_type',
 
         # Drop restrictions
         'drop_enabled',
@@ -143,19 +140,11 @@ class WikiCondition(parser.WikiCondition):
         'is_corrupted',
         'is_fractured',
         'is_synthesised',
-        'is_searing_exarch_item',
-        'is_eater_of_worlds_item',
         'is_veiled',
         'is_replica',
         'is_relic',
         'can_not_be_traded_or_modified',
         'suppress_improper_modifiers_category',
-        'is_sellable',
-        'is_in_game',
-
-        # Old MTX Categorizations
-        'cosmetic_type',
-        'cosmetic_theme',
 
         # Version information
         'release_version',
@@ -262,6 +251,15 @@ class ItemsHandler(ExporterHandler):
         )
 
         #
+        # Prophecies
+        #
+        parser = core_sub.add_parser('prophecy', help='Prophecy export')
+        parser.set_defaults(func=lambda args: parser.print_help())
+        sub = parser.add_subparsers()
+        self.add_default_subparser_filters(sub, cls=ProphecyParser,
+                                           type='prophecy')
+
+        #
         # Betrayal and later map series
         #
         parser = core_sub.add_parser(
@@ -352,6 +350,186 @@ class ItemsHandler(ExporterHandler):
             )
 
 
+class ProphecyParser(parser.BaseParser):
+    _files = [
+        'Prophecies.dat',
+    ]
+
+    _LANG = {
+        'English': {
+            'prophecy': ' (prophecy)',
+        },
+        'Russian': {
+            'prophecy': ' (пророчество)',
+        },
+        'German': {
+            'prophecy': ' (Prophezeiung)',
+        },
+    }
+
+    _conflict_resolver_prophecy_map = {
+        'English': {
+            'MapExtraHaku': ' (Haku)',
+            'MapExtraTora': ' (Tora)',
+            'MapExtraCatarina': ' (Catarina)',
+            'MapExtraVagan': ' (Vagan)',
+            'MapExtraElreon': ' (Elreon)',
+            'MapExtraVorici': ' (Vorici)',
+            'MapExtraZana': ' (Zana)',
+            'MapExtraEinhar': ' (Einhar)',
+            'MapExtraAlva': ' (Alva)',
+            'MapExtraNiko': ' (Niko)',
+            'MapExtraJun': ' (Jun)',
+            # The other one is disabled, should be fine
+            'MapSpawnRogueExiles': '',
+            'MysteriousInvadersFire': ' (Fire)',
+            'MysteriousInvadersCold': ' (Cold)',
+            'MysteriousInvadersLightning': ' (Lightning)',
+            'MysteriousInvadersPhysical': ' (Physical)',
+            'MysteriousInvadersChaos': ' (Chaos)',
+
+            'AreaAllRaresAreCloned': ' (prophecy)',
+            'HillockDropsTheAnvil': ' (prophecy)',
+        },
+        'Russian': {
+            'MapExtraHaku': ' (Хаку)',
+            'MapExtraTora': ' (Тора)',
+            'MapExtraCatarina': ' (Катарина)',
+            'MapExtraVagan': ' (Ваган)',
+            'MapExtraElreon': ' (Элреон)',
+            'MapExtraVorici': ' (Воричи)',
+            'MapExtraZana': ' (Зана)',
+            'MapExtraEinhar': ' (Эйнар)',
+            'MapExtraAlva': ' (Альва)',
+            'MapExtraNiko': ' (Нико)',
+            'MapExtraJun': ' (Джун)',
+            # The other one is disabled, should be fine
+            'MapSpawnRogueExiles': '',
+            'MysteriousInvadersFire': ' (огонь)',
+            'MysteriousInvadersCold': ' (холод)',
+            'MysteriousInvadersLightning': ' (молния)',
+            'MysteriousInvadersPhysical': ' (физический)',
+            'MysteriousInvadersChaos': ' (хаос)',
+
+            'AreaAllRaresAreCloned': ' (пророчество)',
+            'HillockDropsTheAnvil': ' (пророчество)',
+        },
+        'German': {
+            'MapExtraHaku': ' (Haku)',
+            'MapExtraTora': ' (Tora)',
+            'MapExtraCatarina': ' (Catarina)',
+            'MapExtraVagan': ' (Vagan)',
+            'MapExtraElreon': ' (Elreon)',
+            'MapExtraVorici': ' (Vorici)',
+            'MapExtraZana': ' (Zana)',
+            'MapExtraEinhar': ' (Einhar)',
+            'MapExtraAlva': ' (Alva)',
+            'MapExtraNiko': ' (Niko)',
+            'MapExtraJun': ' (Jun)',
+            # The other one is disabled, should be fine
+            'MapSpawnRogueExiles': '',
+            'MysteriousInvadersFire': ' (Feuer)',
+            'MysteriousInvadersCold': ' (Kälte)',
+            'MysteriousInvadersLightning': ' (Blitz)',
+            'MysteriousInvadersPhysical': ' (Physisch)',
+            'MysteriousInvadersChaos': ' (Chaos)',
+
+            'AreaAllRaresAreCloned': ' (Prophezeiung)',
+            'HillockDropsTheAnvil': ' (Prophezeiung)',
+        },
+    }
+
+    _prophecy_column_index_filter = partialmethod(
+        parser.BaseParser._column_index_filter,
+        dat_file_name='Prophecies.dat',
+        error_msg='Several prophecies have not been found:\n%s',
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.lang = config.get_option('language')
+
+    def by_rowid(self, parsed_args):
+        return self.export(
+            parsed_args,
+            self.rr['Prophecies.dat'][parsed_args.start:parsed_args.end],
+        )
+
+    def by_id(self, parsed_args):
+        return self.export(parsed_args, self._prophecy_column_index_filter(
+            column_id='Id', arg_list=parsed_args.id
+        ))
+
+    def by_name(self, parsed_args):
+        return self.export(parsed_args, self._prophecy_column_index_filter(
+            column_id='Name', arg_list=parsed_args.name
+        ))
+
+    def export(self, parsed_args, prophecies):
+        final = []
+        for prophecy in prophecies:
+            if not prophecy['IsEnabled'] and not parsed_args.allow_disabled:
+                console(
+                    'Prophecy "%s" is disabled - skipping.' % prophecy['Name'],
+                    msg=Msg.error
+                )
+                continue
+
+            final.append(prophecy)
+
+        self.rr['Prophecies.dat'].build_index('Name')
+
+        r = ExporterResult()
+        for prophecy in final:
+            name = prophecy['Name']
+
+            infobox = OrderedDict()
+
+            infobox['rarity_id'] = 'normal'
+            infobox['name'] = name
+            infobox['class_id'] = 'StackableCurrency'
+            infobox['base_item_id'] = \
+                'Metadata/Items/Currency/CurrencyItemisedProphecy'
+            infobox['flavour_text'] = prophecy['FlavourText']
+            infobox['prophecy_id'] = prophecy['Id']
+            infobox['prediction_text'] = prophecy['PredictionText2'] or \
+                                         prophecy['PredictionText']
+            infobox['seal_cost'] = prophecy['SealCost']
+
+            if not prophecy['IsEnabled']:
+                infobox['drop_enabled'] = False
+
+            # handle items with duplicate name entries
+            if len(self.rr['Prophecies.dat'].index['Name'][name]) > 1:
+                extra = self._conflict_resolver_prophecy_map[self.lang].get(
+                    prophecy['Id'])
+                if extra is None:
+                    console('Unresolved ambiguous item name "%s" / id "%s". '
+                            'Skipping' % (prophecy['Name'], prophecy['Id']),
+                            msg=Msg.error)
+                    continue
+                name += extra
+            cond = ProphecyWikiCondition(
+                data=infobox,
+                cmdargs=parsed_args,
+            )
+
+            r.add_result(
+                text=cond,
+                out_file='item_%s.txt' % name,
+                wiki_page=[
+                    {'page': name, 'condition': cond},
+                    {
+                        'page': name + self._LANG[self.lang]['prophecy'],
+                        'condition': cond
+                    },
+                ],
+                wiki_message='Prophecy exporter',
+            )
+
+        return r
+
+
 class ItemsParser(SkillParserShared):
     _regex_format = re.compile(
         r'(?P<index>x|y|z)'
@@ -396,8 +574,7 @@ class ItemsParser(SkillParserShared):
         'Ritual': '3.13.0',
         'Ultimatum': '3.14.0',
         'Expedition': '3.15.0',
-        'Hellscape': '3.16.0', # AKA Scourge
-        'Archnemesis': '3.17.0',
+        'Scourge': '3.16.0'
     }
 
     _IGNORE_DROP_LEVEL_CLASSES = (
@@ -417,7 +594,7 @@ class ItemsParser(SkillParserShared):
         'Metadata/Items/Currency/CurrencyImprint',
         # Transmute Shard
         'Metadata/Items/Currency/CurrencyUpgradeToMagicShard',
-        'Metadata/Items/Currency/CurrencyIdentificationShard',
+        'Metadata/Items/Currency/CurrencyIdentificationShard'
     }
 
     _DROP_DISABLED_ITEMS_BY_ID = {
@@ -433,25 +610,6 @@ class ItemsParser(SkillParserShared):
         # Demigod items
         'Metadata/Items/Belts/BeltDemigods1',
         'Metadata/Items/Rings/RingDemigods1',
-        'Metadata/Items/AtlasUpgrades/AtlasRegionUpgradeFinal', # Ivory Watchstone Base Item
-        
-        # Old Watchstones
-        # Tirn's End:
-        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable1_2',
-        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable2_2',
-        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable3_2',
-        # Lex Proxima:
-        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable1_3',
-        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable2_3',
-        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable3_3',
-        # Lex Ejoris:
-        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable1_4',
-        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable2_4',
-        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable3_4',
-        # New Vastir:
-        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable1_5',
-        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable2_5',
-        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable3_5',
     }
 
     _NAME_OVERRIDE_BY_ID = {
@@ -668,40 +826,8 @@ class ItemsParser(SkillParserShared):
             # =================================================================
             # Quivers
             # =================================================================
-            
-            # Serrated Arrow Quiver
-            'Metadata/Items/Quivers/QuiverNew1': '',
-            'Metadata/Items/Quivers/Quiver6': ' (legacy)',
+
             'Metadata/Items/Quivers/QuiverDescent': ' (Descent)',
-
-            # Two-Point Arrow Quiver
-            'Metadata/Items/Quivers/QuiverNew7': '',
-            'Metadata/Items/Quivers/Quiver7': ' (legacy)',
-
-            # Sharktooth Arrow Quiver
-            'Metadata/Items/Quivers/QuiverNew3': '',
-            'Metadata/Items/Quivers/Quiver8': ' (legacy)',
-
-            # Blunt Arrow Quiver
-            'Metadata/Items/Quivers/QuiverNew6': '',
-            'Metadata/Items/Quivers/Quiver9': ' (legacy)',
-
-            # Fire Arrow Quiver
-            'Metadata/Items/Quivers/QuiverNew2': '',
-            'Metadata/Items/Quivers/Quiver10': ' (legacy)',
-
-            # Broadhead Arrow Quiver
-            'Metadata/Items/Quivers/QuiverNew10': '',
-            'Metadata/Items/Quivers/Quiver11': ' (legacy)',
-
-            # Penetrating Arrow Quiver
-            'Metadata/Items/Quivers/QuiverNew5': '',
-            'Metadata/Items/Quivers/Quiver12': ' (legacy)',
-
-            # Spike-Point Arrow Quiver
-            'Metadata/Items/Quivers/QuiverNew8': '',
-            'Metadata/Items/Quivers/Quiver13': ' (legacy)',
-
             # =================================================================
             # Rings
             # =================================================================
@@ -746,9 +872,6 @@ class ItemsParser(SkillParserShared):
             'Metadata/Items/Hideout/HideoutRitualTotem': ' (hideout decoration)',
             'Metadata/Items/Hideout/HideoutCharredSkeleton' : " (hideout decoration)",
             'Metadata/Items/Hideout/HideoutVaalWhispySmoke' : " (hideout decoration)",
-            'Metadata/Items/Hideout/HideoutLionStatueKneeling': '',
-            'Metadata/Items/Hideout/HideoutChurchRuins': ' (hideout decoration)',
-            'Metadata/Items/Hideout/HideoutIncaLetter': ' (hideout decoration)',
 
             # =================================================================
             # invitations
@@ -762,14 +885,10 @@ class ItemsParser(SkillParserShared):
             'Metadata/Items/MapFragments/Maven/MavenMapInsideBottomLeft5': " (10 bosses)",
             'Metadata/Items/MapFragments/Maven/MavenMapInsideTopLeft5': " (10 bosses)",
             'Metadata/Items/MapFragments/Maven/MavenMapInsideTopRight5': " (10 bosses)",
-            'Metadata/Items/MapFragments/Primordial/QuestTangleKey': ' (quest)',
-            'Metadata/Items/MapFragments/Primordial/QuestTangleBossKey': ' (quest)',
-            'Metadata/Items/MapFragments/Primordial/QuestCleansingFireKey': ' (quest)',
-            'Metadata/Items/MapFragments/Primordial/QuestCleansingFireBossKey': ' (quest)',
 
-            # =================================================================
+            #
             # Royale non-gem items
-            # =================================================================
+            #
 
             'Metadata/Items/Weapons/OneHandWeapons/Wands/Wand1Royale': " (Royale)",
             'Metadata/Items/Weapons/TwoHandWeapons/Bows/Bow1': " (Royale)",
@@ -1425,26 +1544,6 @@ class ItemsParser(SkillParserShared):
         'Metadata/Items/Gems/SkillGemNewPhaseRun',
         'Metadata/Items/Gems/SkillGemNewArcticArmour',
         'Metadata/Items/Gems/SkillGemFlammableShot',
-        'Metadata/Items/Gems/SkillGemCallOfTheWild',    # Skill gem's name causes errors when exporting to wiki page since it includes [DNT]
-
-
-        #
-        # Royale Gear
-        #
-
-        'Metadata/Items/Weapons/OneHandWeapons/Wands/Wand1Royale',
-        'Metadata/Items/Weapons/TwoHandWeapons/Bows/Bow1',
-        'Metadata/Items/Rings/RingRoyale1',
-        'Metadata/Items/Rings/RingRoyale2',
-        'Metadata/Items/Rings/RingRoyale3',
-        'Metadata/Items/Rings/RingRoyale4',
-        'Metadata/Items/Amulets/AmuletRoyale1',
-        'Metadata/Items/Belts/BeltRoyale1',
-        'Metadata/Items/Belts/BeltRoyale2',
-        'Metadata/Items/Belts/BeltRoyale3',
-        'Metadata/Items/Flasks/FlaskLife1Royale',
-        'Metadata/Items/Flasks/FlaskLife2Royale',
-        'Metadata/Items/Flasks/FlaskLife3Royale',
 
         #
         # Royale Gems
@@ -2272,7 +2371,6 @@ class ItemsParser(SkillParserShared):
         'Metadata/Items/MicrotransactionCurrency/ProxySkinTransferPack5',
         'Metadata/Items/MicrotransactionCurrency/ProxySkinTransferPack10',
         'Metadata/Items/MicrotransactionCurrency/ProxySkinTransferPack50',
-        'Metadata/Items/MicrotransactionCurrency/TradeMarketBuyoutTabTemporary',
 
         #
         # Hideout Doodads
@@ -2318,13 +2416,6 @@ class ItemsParser(SkillParserShared):
         'Metadata/Items/Hideout/HideoutShengjingBuildingSupplies3',
         'Metadata/Items/Hideout/HideoutShengjingBuildingSupplies4',
         'Metadata/Items/Hideout/HideoutShengjingBuildingSupplies5',
-        'Metadata/Items/Hideout/HideoutSteampunkWalls',
-        'Metadata/Items/Hideout/HideoutSteampunkWaypoint',
-        'Metadata/Items/Hideout/HideoutSteampunkVats',
-        'Metadata/Items/Hideout/HideoutSteampunkTables',
-        'Metadata/Items/Hideout/HideoutSteampunkPipes',
-
-        'Metadata/Items/Hideout/HideoutLionStatueKneeling2',
 
         #
         # Stackable currency
@@ -2362,40 +2453,6 @@ class ItemsParser(SkillParserShared):
         'Metadata/Items/MapFragments/BreachFragmentPhysical',
         'Metadata/Items/MapFragments/BreachFragmentChaos',
         'Metadata/Items/Labyrinth/OfferingToTheGoddess',
-
-        #
-        # Non-stackable incubators before 3.16
-        #
-        'Metadata/Items/Currency/CurrencyIncubationEssence',
-        'Metadata/Items/Currency/CurrencyIncubationCurrency',
-        'Metadata/Items/Currency/CurrencyIncubationUniques',
-        'Metadata/Items/Currency/CurrencyIncubationMaps',
-        'Metadata/Items/Currency/CurrencyIncubationUniqueMaps',
-        'Metadata/Items/Currency/CurrencyIncubationAbyss',
-        'Metadata/Items/Currency/CurrencyIncubationFragments',
-        'Metadata/Items/Currency/CurrencyIncubationScarabs',
-        'Metadata/Items/Currency/CurrencyIncubationEssenceHigh',
-        'Metadata/Items/Currency/CurrencyIncubationFossils',
-        'Metadata/Items/Currency/CurrencyIncubationPerandus',
-        'Metadata/Items/Currency/CurrencyIncubationDivination',
-        'Metadata/Items/Currency/CurrencyIncubationTalismans',
-        'Metadata/Items/Currency/CurrencyIncubationLabyrinthHelm',
-        'Metadata/Items/Currency/CurrencyIncubationArmour6Linked',
-        'Metadata/Items/Currency/CurrencyIncubationCurrencyMid',
-        'Metadata/Items/Currency/CurrencyIncubationUniqueLeague',
-        'Metadata/Items/Currency/CurrencyIncubationArmourShaperElder',
-        'Metadata/Items/Currency/CurrencyIncubationWeaponShaperElder',
-        'Metadata/Items/Currency/CurrencyIncubationTrinketShaperElder',
-        'Metadata/Items/Currency/CurrencyIncubationMapElder',
-        'Metadata/Items/Currency/CurrencyIncubationBreach',
-        'Metadata/Items/Currency/CurrencyIncubationHarbingerShard',
-        'Metadata/Items/Currency/CurrencyIncubationGem',
-        'Metadata/Items/Currency/CurrencyIncubationGeneric',
-        'Metadata/Items/Currency/CurrencyIncubationGemLow',
-        'Metadata/Items/Currency/CurrencyIncubationBestiary',
-        'Metadata/Items/Currency/CurrencyIncubationBlight',
-        'Metadata/Items/Currency/CurrencyIncubationMetamorph',
-        'Metadata/Items/Currency/CurrencyIncubationDelirium',
 
         #
         # Quest items
@@ -2441,7 +2498,7 @@ class ItemsParser(SkillParserShared):
         if self._language != 'English':
             self.rr2 = RelationalReader(
                 path_or_file_system=self.file_system,
-                files=['BaseItemTypes.dat'],
+                files=['BaseItemTypes.dat', 'Prophecies.dat'],
                 read_options={
                     'use_dat_value': False,
                     'auto_build_index': True,
@@ -2678,7 +2735,7 @@ class ItemsParser(SkillParserShared):
                 'template': 'evasion_min',
                 'condition': lambda v: v > 0,
             }),
-            ('EvasionMax', {
+            ('EvasionMin', {
                 'template': 'evasion_max',
                 'condition': lambda v: v > 0,
             }),
@@ -2842,18 +2899,16 @@ class ItemsParser(SkillParserShared):
     _type_microtransaction = _type_factory(
         data_file='BaseItemTypes.dat',
         data_mapping=(
-            # This field was removed in 3.17.
-            # ('ItemShopType', {
-            #     'template': 'cosmetic_type',
-            #     'format': lambda v: v['Name'],
-            #     'condition': lambda v: v,
-            # }),
-            # This field was also removed in 3.17.
-            # ('ItemThemesKey', {
-            #     'template': 'cosmetic_theme',
-            #     'format': lambda v: v['Name'],
-            #     'condition': lambda v: v,
-            # }),
+            ('ItemShopType', {
+                'template': 'cosmetic_type',
+                'format': lambda v: v['Name'],
+                'condition': lambda v: v,
+            }),
+            ('ItemThemesKey', {
+                'template': 'cosmetic_theme',
+                'format': lambda v: v['Name'],
+                'condition': lambda v: v,
+            }),
         ),
     )
 
@@ -2907,8 +2962,7 @@ class ItemsParser(SkillParserShared):
             'Ritual',
             'Ultimatum',
             'Expedition',
-            'Scourge',
-            'Archnemesis',
+            'Scourge'
         ]
         # print('yep', map_series[d])
         return map_series[d]
@@ -3085,7 +3139,6 @@ class ItemsParser(SkillParserShared):
         row_index=True,
         function=_essence_extra,
         fail_condition=True,
-        skip_warning=True,
     )
 
     _type_blight_item = _type_factory(
@@ -3097,7 +3150,6 @@ class ItemsParser(SkillParserShared):
         ),
         row_index=True,
         fail_condition=True,
-        skip_warning=True,
     )
 
     _type_labyrinth_trinket = _type_factory(
@@ -3299,7 +3351,7 @@ class ItemsParser(SkillParserShared):
         'HideoutDoodad': (_type_currency, _type_hideout_doodad),
         'Microtransaction': (_type_currency, _type_microtransaction),
         'DivinationCard': (_type_currency, ),
-        'IncubatorStackable': (_type_currency, _type_incubator),
+        'Incubator': (_type_currency, _type_incubator),
         'HarvestSeed': (_type_currency, _type_harvest_seed),
         'HarvestPlantBooster': (_type_currency, _type_harvest_plant_booster),
         # Labyrinth stuff
@@ -3421,13 +3473,11 @@ class ItemsParser(SkillParserShared):
             if not id.startswith(row['Id']):
                 continue
             map_series = row
-        # Maps are updated using the map series exporter.
-        name = self._format_map_name(base_item_type)
 
-        name_with_wonky_series = self._format_map_name(base_item_type, map_series)
+        name = self._format_map_name(base_item_type, map_series)
 
         # Each iteration of maps has it's own art
-        infobox['inventory_icon'] = name_with_wonky_series
+        infobox['inventory_icon'] = name
         # For betrayal map conflict handling is not used, so setting this to
         # false here should be fine
         infobox['drop_enabled'] = False
@@ -3459,14 +3509,6 @@ class ItemsParser(SkillParserShared):
             self, infobox, base_item_type, rr, language):
         return base_item_type['Name']
 
-    def _conflict_incubator(
-            self, infobox, base_item_type, rr, language):
-        return
-
-    def _conflict_incubator_stackable(
-            self, infobox, base_item_type, rr, language):
-        return base_item_type['Name']
-
     _conflict_resolver_map = {
         'Active Skill Gem': _conflict_active_skill_gems,
         'QuestItem': _conflict_quest_items,
@@ -3481,8 +3523,6 @@ class ItemsParser(SkillParserShared):
         'DelveStackableSocketableCurrency':
             _conflict_delve_stackable_socketable_currency,
         'AtlasRegionUpgradeItem': _conflict_atlas_region_upgrade,
-        'Incubator': _conflict_incubator,
-        'IncubatorStackable': _conflict_incubator_stackable,
     }
 
     def _parse_class_filter(self, parsed_args):
@@ -3501,7 +3541,7 @@ class ItemsParser(SkillParserShared):
             if rarity.id >= 5:
                 break
             # for i, (item, cost) in enumerate(
-            #         source[rarity.name_lower.title() + 'Purchase'],
+            #         source[rarity.name_upper + 'Purchase'],
             #         start=1):
             #     prefix = 'purchase_cost_%s%s' % (rarity.name_lower, i)
             #     infobox[prefix + '_name'] = item['Name']
@@ -3574,9 +3614,11 @@ class ItemsParser(SkillParserShared):
             try:
                 ot = self.ot[m_id + '.ot']
             except FileNotFoundError:
-                ot = base_ot  # If we couldn't find an ot for the specific item, use the base ot.
+                pass
             else:
-                ot.merge(base_ot) # If we did find an ot for the specific item, use it and add things from the base to it.
+                base_ot.merge(ot)
+            finally:
+                ot = base_ot
 
             if 'enable_rarity' in ot['Mods']:
                 infobox['drop_rarities_ids'] = ', '.join(ot['Mods']['enable_rarity'])
@@ -3615,7 +3657,8 @@ class ItemsParser(SkillParserShared):
             name += appendix
             infobox['inventory_icon'] = name
         elif cls_id == 'Map' or \
-                len(rr['BaseItemTypes.dat'].index['Name'][name]) > 1:
+                len(rr['BaseItemTypes.dat'].index['Name'][name] +
+                    rr['Prophecies.dat'].index['Name'][name]) > 1:
             resolver = self._conflict_resolver_map.get(cls_id)
 
             if resolver:
@@ -3660,10 +3703,12 @@ class ItemsParser(SkillParserShared):
 
         r = ExporterResult()
         self.rr['BaseItemTypes.dat'].build_index('Name')
+        self.rr['Prophecies.dat'].build_index('Name')
         self.rr['MapPurchaseCosts.dat'].build_index('Tier')
 
         if self._language != 'English' and parsed_args.english_file_link:
             self.rr2['BaseItemTypes.dat'].build_index('Name')
+            self.rr2['Prophecies.dat'].build_index('Name')
 
         console('Processing item information...')
 
@@ -3685,8 +3730,8 @@ class ItemsParser(SkillParserShared):
                     if not f(self, infobox, base_item_type):
                         fail = True
                         console(
-                            'Required extra info for item "%s" with class id '
-                            '"%s" not found. Skipping.' % (name, cls_id),
+                            f'Required extra info for item "{name}" with class id '
+                            f'"{cls_id}" not found. Skipping.',
                             msg=Msg.error)
                         break
                 if fail:
@@ -3765,10 +3810,8 @@ class ItemsParser(SkillParserShared):
         #Don't print anything if not running in the rowid mode.
         if not set(['start', 'end']).issubset(vars(parsed_args).keys()):
             return
-        try:
-            export_row_count = parsed_args.end - parsed_args.start
-        except TypeError:
-            export_row_count = parsed_args.start
+
+        export_row_count = parsed_args.end - parsed_args.start
         #If we're printing less than 100 rows, print every rowid
         if export_row_count <= 100:
             print_granularity = 1
@@ -3780,22 +3823,20 @@ class ItemsParser(SkillParserShared):
             console(f"Processing item with rowid {base_item_type.rowid}: {base_item_type['Name']}")
         return
 
-    def _format_map_name(self, base_item_type, map_series=None, language=None):
+    def _format_map_name(self, base_item_type, map_series, language=None):
         if language is None:
             language = self._language
-        if map_series is None:
-            if 'Harbinger' in base_item_type['Id']:
-                return f"{base_item_type['Name']} ({self._LANG[language][re.sub(r'^.*Harbinger', '', base_item_type['Id'])]})"
-            else:
-                return f"{base_item_type['Name']}"
-        elif 'Harbinger' in base_item_type['Id']:
+        if 'Harbinger' in base_item_type['Id']:
             return '%s (%s) (%s)' % (
                 base_item_type['Name'],
                 self._LANG[language][re.sub(r'^.*Harbinger', '', base_item_type['Id'])],
                 map_series['Name']
             )
         else:
-            return f"{base_item_type['Name']} ({map_series['Name']})"
+            return '%s (%s)' % (
+                base_item_type['Name'],
+                map_series['Name']
+            )
 
     def _get_map_series(self, parsed_args):
         self.rr['MapSeries.dat'].build_index('Id')
@@ -3831,9 +3872,6 @@ class ItemsParser(SkillParserShared):
     def export_map_icons(self, parsed_args):
         r = ExporterResult()
 
-        # This needs to fall back to baseitemtype -> ItemVisualIdentity.
-        # It's failing on the weird Harbinger base map types and the shaper guardian maps.
-
         if not parsed_args.store_images or not parsed_args.convert_images:
             console(
                 'Image storage options must be specified for this function',
@@ -3845,20 +3883,16 @@ class ItemsParser(SkillParserShared):
         if map_series is False:
             return r
 
-        # === Base map icons ===
+        # base images
         self._image_init(parsed_args)
-
-        # output base icon (without map symbol) to .../Base.dds
         base_ico = os.path.join(self._img_path, 'Base.dds')
 
-        # read from the file path in the BaseIcon_DDSFile field from MapSeries.dat.
         self._write_dds(
             data=self.file_system.get_file(map_series['BaseIcon_DDSFile']),
             out_path=base_ico,
             parsed_args=parsed_args,
         )
 
-        # === Maps from Atlas ===
         for atlas_node in self.rr['AtlasNode.dat']:
             if not atlas_node['ItemVisualIdentityKey']['DDSFile']:
                 warnings.warn(
@@ -3910,27 +3944,21 @@ class ItemsParser(SkillParserShared):
         self.rr['AtlasNode.dat'].build_index('MapsKey')
         names = set(parsed_args.name)
         map_series_tiers = {}
-        # For each map, save off the atlas node
         for row in self.rr['MapSeriesTiers.dat']:
             maps = row['MapsKey']
-
-            # Try to find the atlas node for the map. Save that as atlas_node by breaking.
             for atlas_node in self.rr['AtlasNode.dat'].index['MapsKey'][maps]:
                 # This excludes the unique maps
-                if atlas_node['ItemVisualIdentityKey']['IsAtlasOfWorldsMapIcon']:
+                if atlas_node['ItemVisualIdentityKey'][
+                        'IsAtlasOfWorldsMapIcon']:
                     break
-            # If we couldn't find the atlas node, set atlas_node to None to clear the last value.
             else:
                 # Maps that are no longer on the atlas such as guardian maps
                 # or harbinger
                 atlas_node = None
-            
-            # Save off the atlas_node for each map in the series, 
-            # filtering to the maps from the names command argument if it was provided.
-            if (names and maps['BaseItemTypesKey']['Name'] in names) or not names:
+            if names and maps['BaseItemTypesKey']['Name'] in names or \
+                    not names:
                 map_series_tiers[row] = atlas_node
 
-        # Save off the base icon
         if parsed_args.store_images:
             if not parsed_args.convert_images:
                 console(
@@ -3950,9 +3978,10 @@ class ItemsParser(SkillParserShared):
 
             base_ico = base_ico.replace('.dds', '.png')
 
+        #
         self.rr['MapSeriesTiers.dat'].build_index('MapsKey')
         self.rr['MapPurchaseCosts.dat'].build_index('Tier')
-        # self.rr['UniqueMaps.dat'].build_index('WorldAreasKey')
+        self.rr['UniqueMaps.dat'].build_index('ItemVisualIdentityKey')
 
         for row, atlas_node in map_series_tiers.items():
             maps = row['MapsKey']
@@ -3988,7 +4017,6 @@ class ItemsParser(SkillParserShared):
             else:
                 infobox['inventory_icon'] = name
 
-            starting_tier = tier
             if atlas_node:
                 if latest:
 
@@ -3998,31 +4026,36 @@ class ItemsParser(SkillParserShared):
 
                     # infobox['atlas_x'] = atlas_node['X']
                     # infobox['atlas_y'] = atlas_node['Y']
+                    infobox['atlas_region_id'] = atlas_node['AtlasRegionsKey'][
+                        'Id']
 
                     minimum = 0
                     connections = defaultdict(
                         lambda: ['False' for i in range(0, 5)])
                     for i in range(0, 5):
-                        # We don't know what these coordinates are for at this point.
-                        # infobox['atlas_x%s' % i] = atlas_node['X%s' % i]
                         tier = atlas_node['Tier%s' % i]
+                        infobox['atlas_x%s' % i] = atlas_node['X%s' % i]
+                        infobox['atlas_y%s' % i] = atlas_node['Y%s' % i]
                         infobox['atlas_map_tier%s' % i] = tier
                         if tier:
                             if minimum == 0:
                                 minimum = i
 
-                    # The indexing isn't working well. It is using the entire mapped out object as keys.
-                    # We can hold off on all connections for now. It's fairly obvious that unique maps are connected to their normal counterpart.
-                    # See if there's a unique map for this base map.
-                    # unique_maps_area_index = self.rr['UniqueMaps.dat'].index['WorldAreasKey']
-                    # area = atlas_node['MapsKey']['Unique_WorldAreasKey']
-                    # if area in unique_maps_area_index:
-                    #     #print(unique_maps_area_index.keys(), flush=True)
-                    #     key = '%s (%s)' % (
-                    #         unique_maps_area_index[area]['WordsKey']['Text'],
-                    #         map_series['Name']
-                    #     )
-                    #     connections[key][1] = 'True'
+                        for atlas_node2 in atlas_node['AtlasNodeKeys%s' % i]:
+                            ivi = atlas_node2['ItemVisualIdentityKey']
+                            if ivi['IsAtlasOfWorldsMapIcon']:
+                                key = self._format_map_name(
+                                    atlas_node2['MapsKey']['BaseItemTypesKey'],
+                                    map_series,
+                                )
+                            else:
+                                key = '%s (%s)' % (
+                                    self.rr['UniqueMaps.dat'].index[
+                                        'ItemVisualIdentityKey'][ivi][
+                                        'WordsKey']['Text'],
+                                    map_series['Name']
+                                )
+                            connections[key][i] = 'True'
 
                     infobox['atlas_region_minimum'] = minimum
                     for i, (k, v) in enumerate(connections.items(), start=1):
@@ -4038,10 +4071,6 @@ class ItemsParser(SkillParserShared):
                     self.rr['MapPurchaseCosts.dat'].index['Tier'][tier],
                     infobox
                 )
-            
-            # Skip maps that aren't in the rotation this map series.
-            if tier == 0:
-                continue
 
             '''if maps['UpgradedFrom_MapsKey']:
                 infobox['upgeaded_from_set1_group1_page'] = '%s (%s)' % (
@@ -4063,64 +4092,51 @@ class ItemsParser(SkillParserShared):
 
             r.add_result(
                 text=cond,
-                out_file=f'map_{name}.txt',
+                out_file='map_%s.txt' % name,
                 wiki_page=[
                     {
-                        'page': f'Map:{name}',
+                        'page': name,
                         'condition': cond,
                     }
                 ],
                 wiki_message='Map exporter',
             )
 
-            # Export map icons
             if parsed_args.store_images:
-                # Warn about and skip maps that aren't on the atlas and may not exist.
-                if atlas_node is None and base_item_type['Id'] not in MAPS_IN_SERIES_BUT_NOT_ON_ATLAS:
+                if atlas_node is None or \
+                        not atlas_node['ItemVisualIdentityKey']['DDSFile']:
                     warnings.warn(
-                        f"{base_item_type['Name']} ({base_item_type['Id']}) is not currently on the Atlas"
+                        'Missing 2d art inventory icon for item "%s"' %
+                        base_item_type['Name']
                     )
                     continue
 
-                # Warn about and skip maps that are on atlas but have no icon.
-                elif atlas_node is not None and not atlas_node['ItemVisualIdentityKey']['DDSFile']:
-                    warnings.warn(f'Missing 2d art inventory icon for item "{base_item_type["Name"]}"')
-                    continue
-                
                 ico = os.path.join(self._img_path, name + ' inventory icon.dds')
 
-                # If the atlas doesn't point to an icon, use the base_item_type for the icon.
-                if atlas_node is not None:
-                    dds_file_path = atlas_node['ItemVisualIdentityKey']['DDSFile']
-                else:
-                    dds_file_path = base_item_type['ItemVisualIdentityKey']['DDSFile']
-
-                # Save off the map's icon (which still needs to be layered onto the base map)
                 self._write_dds(
-                    data=self.file_system.get_file(dds_file_path),
+                    data=self.file_system.get_file(
+                        atlas_node['ItemVisualIdentityKey']['DDSFile']),
                     out_path=ico,
                     parsed_args=parsed_args,
                 )
+
                 ico = ico.replace('.dds', '.png')
 
-                # Recolor the map icon if appropriate and layer the map icon with the base icon.
-                if base_item_type['Id'] not in MAPS_TO_SKIP_COLORING:
-                    color = None
-                    if 5 < starting_tier <= 10:
-                        color = self._MAP_COLORS['mid tier']
-                    if 10 < starting_tier:
-                        color = self._MAP_COLORS['high tier']
-
-                    # This isn't how the game actually makes these map icons, so it isn't ideal, but it works.
-                    if color:
-                        os.system(
-                            f'magick convert "{ico}" -fill rgb({color}) -colorize 100 "{ico}"'
-                        )
-
-                if base_item_type['Id'] not in MAPS_TO_SKIP_COMPOSITING:
+                color = None
+                if 5 < tier <= 10:
+                    color = self._MAP_COLORS['mid tier']
+                elif 10 < tier <= 15:
+                    color = self._MAP_COLORS['high tier']
+                if color:
                     os.system(
-                        f'magick composite -gravity center "{ico}" "{base_ico}" "{ico}"'
-                    )
+                        '''magick convert "%s" -fill rgb(%s) -colorize 100 "%s"''' % (
+                        ico, color, ico
+                    ))
+
+                os.system(
+                    'magick composite -gravity center "%s" "%s" "%s"' % (
+                    ico, base_ico, ico
+                ))
 
         return r
 
