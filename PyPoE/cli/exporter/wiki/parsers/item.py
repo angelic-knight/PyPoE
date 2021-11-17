@@ -2774,7 +2774,7 @@ class ItemsParser(SkillParserShared):
                 'template': 'evasion_min',
                 'condition': lambda v: v > 0,
             }),
-            ('EvasionMin', {
+            ('EvasionMax', {
                 'template': 'evasion_max',
                 'condition': lambda v: v > 0,
             }),
