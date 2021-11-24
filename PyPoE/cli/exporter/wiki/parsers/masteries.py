@@ -358,6 +358,8 @@ class MasteryGroupParser(parser.BaseParser):
                     value = fmt(value)
                 data[copy_data['template']] = value
 
+            data['name'] = map_id_to_name(data['id'])
+
             # Parse and clean up icon path
             icon_field = 'InactiveIcon'
             if mastery_grp[icon_field]:
@@ -374,7 +376,7 @@ class MasteryGroupParser(parser.BaseParser):
                     pass
             else:
                 data['icon'] = ''
-                warnings.warn(f"Icon path file not found for {mastery_grp['Id']}: {mastery_grp['Name']}")
+                warnings.warn(f"Icon path file not found for {mastery_grp['Id']}: {data['name']}")
 
             data['icon'] = data['icon'].replace('.dds', '')
 
@@ -398,10 +400,10 @@ class MasteryGroupParser(parser.BaseParser):
 
             r.add_result(
                 text=cond,
-                out_file='mastery_group_%s.txt' % data['id'],
+                out_file='mastery_group_%s.txt' % data['name'],
                 wiki_page=[
                     {
-                        'page': self._format_wiki_title(data['id']) + " Mastery",
+                        'page': self._format_wiki_title(data['name']),
                         'condition': cond,
                     },
                 ],
@@ -413,3 +415,31 @@ class MasteryGroupParser(parser.BaseParser):
 # =============================================================================
 # Functions
 # =============================================================================
+
+def map_id_to_name(id: str):
+    mastery_type = ''
+    if(id in id_to_name_map.keys()):
+        mastery_type = id_to_name_map[id]
+    else:
+        mastery_type = id
+    
+    return mastery_type + " Mastery"
+    
+# The names used ingame are the names of the passive skills, and you never actually see names for 
+# the mastery objects. I don't want to parse the entire passives dat file to get these names and there's 
+# just a few so I'm hardcoding this mapping for now.
+id_to_name_map = {
+    'ArmourEvasion': 'Armour and Evasion',
+    'ArmourEnergyShield': 'Armour and Energy Shield',
+    'Charges': 'Charge',
+    'Criticals': 'Critical',
+    'DamageOverTime': 'Damage Over Time',
+    'DualWield': 'Dual Wielding',
+    'EnergyShield': 'Energy Shield',
+    'EvasionEnergyShield': 'Evasion and Energy Shield',
+    'MinionDefence': 'Minion Defence',
+    'MinionOffence': 'Minion Offence',
+    'Suppression': 'Spell Suppression',
+    'TwoHand': 'Two Hand',
+    'Resistance': 'Resistance and Ailment Protection',
+}
