@@ -54,6 +54,7 @@ from PyPoE.cli.core import run
 from PyPoE.cli.handler import ConfigHandler, SetupHandler
 from PyPoE.cli.exporter import config
 from PyPoE.cli.exporter.dat import DatHandler
+from PyPoE.cli.exporter.image import ImageHandler
 from PyPoE.cli.exporter.wiki.core import WikiHandler
 
 # =============================================================================
@@ -101,6 +102,7 @@ def main():
 
     DatHandler(main_sub)
     WikiHandler(main_sub)
+    ImageHandler(main_sub)
     # In that order..
     SetupHandler(main_sub, config)
     ConfigHandler(main_sub, config)
