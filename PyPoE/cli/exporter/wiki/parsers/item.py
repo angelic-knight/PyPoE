@@ -594,7 +594,7 @@ class ItemsParser(SkillParserShared):
         'Metadata/Items/Currency/CurrencyImprint',
         # Transmute Shard
         'Metadata/Items/Currency/CurrencyUpgradeToMagicShard',
-        'Metadata/Items/Currency/CurrencyIdentificationShard'
+        'Metadata/Items/Currency/CurrencyIdentificationShard',
     }
 
     _DROP_DISABLED_ITEMS_BY_ID = {
@@ -610,6 +610,25 @@ class ItemsParser(SkillParserShared):
         # Demigod items
         'Metadata/Items/Belts/BeltDemigods1',
         'Metadata/Items/Rings/RingDemigods1',
+        'Metadata/Items/AtlasUpgrades/AtlasRegionUpgradeFinal', # Ivory Watchstone Base Item
+        
+        # Old Watchstones
+        # Tirn's End:
+        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable1_2',
+        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable2_2',
+        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable3_2',
+        # Lex Proxima:
+        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable1_3',
+        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable2_3',
+        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable3_3',
+        # Lex Ejoris:
+        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable1_4',
+        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable2_4',
+        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable3_4',
+        # New Vastir:
+        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable1_5',
+        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable2_5',
+        'Metadata/Items/AtlasUpgrades/AtlasUpgradeCraftable3_5',
     }
 
     _NAME_OVERRIDE_BY_ID = {

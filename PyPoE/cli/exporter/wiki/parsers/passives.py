@@ -362,7 +362,7 @@ class PassiveSkillParser(parser.BaseParser):
                         psg_id]['Id'] for psg_id in node.connections])
 
             # extract icons if specified
-            if parsed_args.store_images:
+            if parsed_args.store_images and data['icon'] != '':
                 fn = data['icon'] + ' passive skill icon'
                 dds = os.path.join(self._img_path, fn + '.dds')
                 png = os.path.join(self._img_path, fn + '.png')
