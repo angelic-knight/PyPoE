@@ -270,11 +270,13 @@ class MasteryEffectParser(parser.BaseParser):
 
 class MasteryGroupParser(parser.BaseParser):
     _MASTERY_FILE_NAME = 'PassiveSkillMasteryGroups.dat'
+    _PASSIVES_FILE_NAME = 'PassiveSkills.dat'
     _files = [
         _MASTERY_FILE_NAME,
+        _PASSIVES_FILE_NAME,
     ]
 
-    _passive_column_index_filter = partialmethod(
+    _mastery_column_index_filter = partialmethod(
         parser.BaseParser._column_index_filter,
         dat_file_name=_MASTERY_FILE_NAME,
         error_msg='Several masteries have not been found:\n%s',
@@ -314,7 +316,7 @@ class MasteryGroupParser(parser.BaseParser):
         )
 
     def by_id(self, parsed_args):
-        return self.export(parsed_args, self._passive_column_index_filter(
+        return self.export(parsed_args, self._mastery_column_index_filter(
             column_id='Id', arg_list=parsed_args.id
         ))
 
@@ -330,8 +332,10 @@ class MasteryGroupParser(parser.BaseParser):
             )
             return r
 
-        console('Accessing additional data...')
+        console('Determining Mastery Group Names')
+        name_map = self.get_mastery_name_map()
 
+        console('Accessing additional data...')
         # Read the .dat file
         self.rr[self._MASTERY_FILE_NAME]
         
@@ -358,7 +362,7 @@ class MasteryGroupParser(parser.BaseParser):
                     value = fmt(value)
                 data[copy_data['template']] = value
 
-            data['name'] = map_id_to_name(data['id'])
+            data['name'] = name_map[data['id']]
 
             # Parse and clean up icon path
             icon_field = 'InactiveIcon'
@@ -412,34 +416,16 @@ class MasteryGroupParser(parser.BaseParser):
 
         return r
 
+    def get_mastery_name_map(self):
+        name_map = {}
+        passives = self.rr[self._PASSIVES_FILE_NAME]
+        # Find the passive skills that let you allocate masteries, and match the mastery groups
+        # they're linked to to the name of the passive skills
+        for passive in passives:
+            if not passive['MasteryGroup'] is None:
+                name_map[passive['MasteryGroup']['Id']] = passive['Name']
+        return name_map
+
 # =============================================================================
 # Functions
 # =============================================================================
-
-def map_id_to_name(id: str):
-    mastery_type = ''
-    if(id in id_to_name_map.keys()):
-        mastery_type = id_to_name_map[id]
-    else:
-        mastery_type = id
-    
-    return mastery_type + " Mastery"
-    
-# The names used ingame are the names of the passive skills, and you never actually see names for 
-# the mastery objects. I don't want to parse the entire passives dat file to get these names and there's 
-# just a few so I'm hardcoding this mapping for now.
-id_to_name_map = {
-    'ArmourEvasion': 'Armour and Evasion',
-    'ArmourEnergyShield': 'Armour and Energy Shield',
-    'Charges': 'Charge',
-    'Criticals': 'Critical',
-    'DamageOverTime': 'Damage Over Time',
-    'DualWield': 'Dual Wielding',
-    'EnergyShield': 'Energy Shield',
-    'EvasionEnergyShield': 'Evasion and Energy Shield',
-    'MinionDefence': 'Minion Defence',
-    'MinionOffence': 'Minion Offence',
-    'Suppression': 'Spell Suppression',
-    'TwoHand': 'Two Hand',
-    'Resistance': 'Resistance and Ailment Protection',
-}
