@@ -6249,6 +6249,10 @@ specification = Specification({
                 name='Unknown5',
                 type='int',
             ),
+            Field( 
+                name='Unknown6', #This is pobably endless delve mosnter level scaling.
+                type='int',
+            ),
         ),
     ),
     'DelveMonsterSpawners.dat': File(

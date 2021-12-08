@@ -749,6 +749,9 @@ class DelveParser(GenericLuaParser):
                 delve_upgrade_stats[-1]['value'] = value
 
         for row in self.rr['DelveCraftingModifiers.dat']:
+            # Ignore all the weird RandomFossileOutcome items.
+            if('RandomFossilOutcome' in row['BaseItemTypesKey']['Id']):
+                continue
             self._copy_from_keys(row, self._COPY_KEYS_DELVE_CRAFTING_MODIFIERS,
                                  fossils)
 
