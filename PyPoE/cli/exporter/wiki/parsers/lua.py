@@ -506,7 +506,7 @@ class BestiaryParser(GenericLuaParser):
             self._copy_from_keys(
                 row, self._COPY_KEYS_BESTIARY_COMPONENTS, components
             )
-            if row['BeastRarity'] != RARITY.ANY:
+            if row['BeastRarity'] != RARITY.ANY and not (row['BeastRarity'] is None):
                 display_string = 'ItemDisplayString' + row['BeastRarity'].name_upper
                 components[-1]['rarity'] = self.rr['ClientStrings.dat'].index['Id'][display_string]['Text']
 

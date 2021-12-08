@@ -585,10 +585,10 @@ class RARITY(Enum, metaclass=IntEnumMetaOverride):
         the colour attribute represents the textual representation of the
         associated colour
     """
-    NORMAL = (1, 'Normal', 'normal', 'white')
-    MAGIC = (2, 'Magic', 'magic', 'blue')
-    RARE = (3, 'Rare', 'rare', 'yellow')
-    UNIQUE = (4, 'Unique', 'unique', 'brown')
+    NORMAL = (0, 'Normal', 'normal', 'white')
+    MAGIC = (1, 'Magic', 'magic', 'blue')
+    RARE = (2, 'Rare', 'rare', 'yellow')
+    UNIQUE = (3, 'Unique', 'unique', 'brown')
     ANY = (5, 'Any', 'any', 'any')
 
     def __new__(cls, id, upper, lower, colour):
