@@ -3590,7 +3590,7 @@ class ItemsParser(SkillParserShared):
             if rarity.id >= 5:
                 break
             # for i, (item, cost) in enumerate(
-            #         source[rarity.name_upper + 'Purchase'],
+            #         source[rarity.name_lower.title() + 'Purchase'],
             #         start=1):
             #     prefix = 'purchase_cost_%s%s' % (rarity.name_lower, i)
             #     infobox[prefix + '_name'] = item['Name']

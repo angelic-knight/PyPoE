@@ -568,34 +568,37 @@ class RARITY(Enum, metaclass=IntEnumMetaOverride):
         Unique rarity ("brown" colour)
     ANY : RARITY
         Any rarity
-    id : int
-        When accessing a :class:`RARITY` instance (e.x. :attr:`RARITY.NORMAL`)
-        the id attribute denotes the integer that is sometimes used in the game
-        files to represent the colour
-    name_upper : str
-        When accessing a :class:`RARITY` instance (e.x. :attr:`RARITY.NORMAL`)
-        the upper attribute represents the textual representation with an upper
-        case starting letter
-    name_lower : str
-        When accessing a :class:`RARITY` instance (e.x. :attr:`RARITY.NORMAL`)
-        the lower attribute represents the textual representation with an lower
-        case starting letter
-    colour : str
-        When accessing a :class:`RARITY` instance (e.x. :attr:`RARITY.NORMAL`)
-        the colour attribute represents the textual representation of the
-        associated colour
     """
-    NORMAL = (0, 'Normal', 'normal', 'white')
-    MAGIC = (1, 'Magic', 'magic', 'blue')
-    RARE = (2, 'Rare', 'rare', 'yellow')
-    UNIQUE = (3, 'Unique', 'unique', 'brown')
-    ANY = (5, 'Any', 'any', 'any')
 
-    def __new__(cls, id, upper, lower, colour):
+    id: int
+    """
+    When accessing a :class:`RARITY` instance (e.x. :attr:`RARITY.NORMAL`)
+    the id attribute denotes the integer that is sometimes used in the game
+    files to represent the colour
+    """
+    name_lower: str
+    """
+    When accessing a :class:`RARITY` instance (e.x. :attr:`RARITY.NORMAL`)
+    the name_lower attribute represents the textual representation with an lower
+    case starting letter
+    """
+    colour: str
+    """
+    When accessing a :class:`RARITY` instance (e.x. :attr:`RARITY.NORMAL`)
+    the colour attribute represents the textual representation of the
+    associated colour
+    """
+
+    NORMAL = (0, 'normal', 'white')
+    MAGIC = (1, 'magic', 'blue')
+    RARE = (2, 'rare', 'yellow')
+    UNIQUE = (3, 'unique', 'brown')
+    ANY = (5, 'any', 'any')
+
+    def __new__(cls, id: int, lower: str, colour: str):
         obj = object.__new__(cls)
         obj._value_ = id
         obj.id = id
-        obj.name_upper = upper
         obj.name_lower = lower
         obj.colour = colour
         return obj

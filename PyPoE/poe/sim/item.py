@@ -559,7 +559,7 @@ class ItemParser:
 
             rarity = rarity.group('rarity')
             for rarity_const in RARITY:
-                if rarity_const.name_upper == rarity:
+                if rarity_const.name_lower == rarity.lower():
                     self.rarity = rarity_const
                     self._type = ITEM_TYPES.ITEM
                     break
