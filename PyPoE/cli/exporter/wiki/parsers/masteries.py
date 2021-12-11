@@ -404,7 +404,7 @@ class MasteryGroupParser(parser.BaseParser):
 
             r.add_result(
                 text=cond,
-                out_file='mastery_group_%s.txt' % data['name'],
+                out_file=f"mastery_group_{data['name']}.txt",
                 wiki_page=[
                     {
                         'page': self._format_wiki_title(data['name']),
@@ -422,7 +422,7 @@ class MasteryGroupParser(parser.BaseParser):
         # Find the passive skills that let you allocate masteries, and match the mastery groups
         # they're linked to to the name of the passive skills
         for passive in passives:
-            if not passive['MasteryGroup'] is None:
+            if passive['MasteryGroup'] is not None:
                 name_map[passive['MasteryGroup']['Id']] = passive['Name']
         return name_map
 
