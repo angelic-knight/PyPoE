@@ -41,6 +41,7 @@ from functools import partialmethod
 
 # Self
 from PyPoE.poe.constants import RARITY
+from PyPoE.cli.exporter.wiki.parsers.itemconstants import MAPS_IN_SERIES_BUT_NOT_ON_ATLAS, MAPS_TO_SKIP_COLORING_AND_COMPOSITING
 from PyPoE.poe.file.dat import RelationalReader
 from PyPoE.poe.file.ot import OTFile
 from PyPoE.poe.sim.formula import gem_stat_requirement, GemTypes
@@ -3974,6 +3975,9 @@ class ItemsParser(SkillParserShared):
     def export_map_icons(self, parsed_args):
         r = ExporterResult()
 
+        # This needs to fall back to baseitemtype -> ItemVisualIdentity.
+        # It's failing on the weird Harbinger base map types and the shaper guardian maps.
+
         if not parsed_args.store_images or not parsed_args.convert_images:
             console(
                 'Image storage options must be specified for this function',
@@ -3987,8 +3991,11 @@ class ItemsParser(SkillParserShared):
 
         # base images
         self._image_init(parsed_args)
+
+        # output to .../Base.dds
         base_ico = os.path.join(self._img_path, 'Base.dds')
 
+        # read from the file path in the BaseIcon_DDSFile field from MapSeries.dat.
         self._write_dds(
             data=self.file_system.get_file(map_series['BaseIcon_DDSFile']),
             out_path=base_ico,
@@ -4057,8 +4064,9 @@ class ItemsParser(SkillParserShared):
                 # Maps that are no longer on the atlas such as guardian maps
                 # or harbinger
                 atlas_node = None
-            if names and maps['BaseItemTypesKey']['Name'] in names or \
-                    not names:
+            
+            # Save off the atlas_node for each map in the series
+            if (names and maps['BaseItemTypesKey']['Name'] in names) or not names:
                 map_series_tiers[row] = atlas_node
 
         if parsed_args.store_images:
@@ -4205,40 +4213,56 @@ class ItemsParser(SkillParserShared):
             )
 
             if parsed_args.store_images:
-                if atlas_node is None or \
-                        not atlas_node['ItemVisualIdentityKey']['DDSFile']:
+                if atlas_node is None and base_item_type['Id'] not in MAPS_IN_SERIES_BUT_NOT_ON_ATLAS:
+                    warnings.warn(
+                        f"{base_item_type['Name']} ({base_item_type['Id']}) is not currently on the Atlas"
+                    )
+                    continue
+
+                elif atlas_node is not None and not atlas_node['ItemVisualIdentityKey']['DDSFile']:
                     warnings.warn(
                         'Missing 2d art inventory icon for item "%s"' %
                         base_item_type['Name']
                     )
                     continue
 
+                if atlas_node is None and base_item_type['Name'] in MAPS_IN_SERIES_BUT_NOT_ON_ATLAS:
+                    warnings.warn(
+                        f"{base_item_type['Name']} needs to quit early since we can't export it yet."
+                    )
+                    continue
+                
                 ico = os.path.join(self._img_path, name + ' inventory icon.dds')
 
+                if atlas_node is not None:
+                    dds_file_path = atlas_node['ItemVisualIdentityKey']['DDSFile']
+                else:
+                    dds_file_path = base_item_type['ItemVisualIdentityKey']['DDSFile']
+
                 self._write_dds(
-                    data=self.file_system.get_file(
-                        atlas_node['ItemVisualIdentityKey']['DDSFile']),
+                    data=self.file_system.get_file(dds_file_path),
                     out_path=ico,
                     parsed_args=parsed_args,
                 )
 
                 ico = ico.replace('.dds', '.png')
 
-                color = None
-                if 5 < tier <= 10:
-                    color = self._MAP_COLORS['mid tier']
-                elif 10 < tier <= 15:
-                    color = self._MAP_COLORS['high tier']
-                if color:
-                    os.system(
-                        '''magick convert "%s" -fill rgb(%s) -colorize 100 "%s"''' % (
-                        ico, color, ico
-                    ))
+                if base_item_type['Id'] not in MAPS_TO_SKIP_COLORING_AND_COMPOSITING:
+                    color = None
+                    if 5 < tier <= 10:
+                        color = self._MAP_COLORS['mid tier']
+                    elif 10 < tier <= 15:
+                        color = self._MAP_COLORS['high tier']
+                    if color:
+                        os.system(
+                            '''magick convert "%s" -fill rgb(%s) -colorize 100 "%s"''' % (
+                            ico, color, ico
+                        ))
 
-                os.system(
-                    'magick composite -gravity center "%s" "%s" "%s"' % (
-                    ico, base_ico, ico
-                ))
+                    os.system(
+                        'magick composite -gravity center "%s" "%s" "%s"' % (
+                        ico, base_ico, ico
+                    ))
 
         return r
 
