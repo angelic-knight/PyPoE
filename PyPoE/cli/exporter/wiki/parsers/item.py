@@ -3989,10 +3989,10 @@ class ItemsParser(SkillParserShared):
         if map_series is False:
             return r
 
-        # base images
+        # === Base map icons ===
         self._image_init(parsed_args)
 
-        # output to .../Base.dds
+        # output base icon (without map symbol) to .../Base.dds
         base_ico = os.path.join(self._img_path, 'Base.dds')
 
         # read from the file path in the BaseIcon_DDSFile field from MapSeries.dat.
@@ -4002,6 +4002,7 @@ class ItemsParser(SkillParserShared):
             parsed_args=parsed_args,
         )
 
+        # === Maps from Atlas ===
         for atlas_node in self.rr['AtlasNode.dat']:
             if not atlas_node['ItemVisualIdentityKey']['DDSFile']:
                 warnings.warn(
@@ -4053,13 +4054,16 @@ class ItemsParser(SkillParserShared):
         self.rr['AtlasNode.dat'].build_index('MapsKey')
         names = set(parsed_args.name)
         map_series_tiers = {}
+        # For each map, save off the atlas node
         for row in self.rr['MapSeriesTiers.dat']:
             maps = row['MapsKey']
+
+            # Try to find the atlas node for the map. Save that as atlas_node by breaking.
             for atlas_node in self.rr['AtlasNode.dat'].index['MapsKey'][maps]:
                 # This excludes the unique maps
-                if atlas_node['ItemVisualIdentityKey'][
-                        'IsAtlasOfWorldsMapIcon']:
+                if atlas_node['ItemVisualIdentityKey']['IsAtlasOfWorldsMapIcon']:
                     break
+            # If we couldn't find the atlas node, set atlas_node to None to clear the last value.
             else:
                 # Maps that are no longer on the atlas such as guardian maps
                 # or harbinger
@@ -4069,6 +4073,7 @@ class ItemsParser(SkillParserShared):
             if (names and maps['BaseItemTypesKey']['Name'] in names) or not names:
                 map_series_tiers[row] = atlas_node
 
+        # Save off the base icon
         if parsed_args.store_images:
             if not parsed_args.convert_images:
                 console(
@@ -4212,41 +4217,40 @@ class ItemsParser(SkillParserShared):
                 wiki_message='Map exporter',
             )
 
+            # Export map icons
             if parsed_args.store_images:
+                # Warn about and skip maps that aren't on the atlas and may not exist.
                 if atlas_node is None and base_item_type['Id'] not in MAPS_IN_SERIES_BUT_NOT_ON_ATLAS:
                     warnings.warn(
                         f"{base_item_type['Name']} ({base_item_type['Id']}) is not currently on the Atlas"
                     )
                     continue
 
+                # Warn about and skip maps that are on atlas but have no icon.
                 elif atlas_node is not None and not atlas_node['ItemVisualIdentityKey']['DDSFile']:
                     warnings.warn(
                         'Missing 2d art inventory icon for item "%s"' %
                         base_item_type['Name']
                     )
                     continue
-
-                if atlas_node is None and base_item_type['Name'] in MAPS_IN_SERIES_BUT_NOT_ON_ATLAS:
-                    warnings.warn(
-                        f"{base_item_type['Name']} needs to quit early since we can't export it yet."
-                    )
-                    continue
                 
                 ico = os.path.join(self._img_path, name + ' inventory icon.dds')
 
+                # If the atlas doesn't point to an icon, use the base_item_type for the icon.
                 if atlas_node is not None:
                     dds_file_path = atlas_node['ItemVisualIdentityKey']['DDSFile']
                 else:
                     dds_file_path = base_item_type['ItemVisualIdentityKey']['DDSFile']
 
+                # Save off the map's icon (which still needs to be layered onto the base map)
                 self._write_dds(
                     data=self.file_system.get_file(dds_file_path),
                     out_path=ico,
                     parsed_args=parsed_args,
                 )
-
                 ico = ico.replace('.dds', '.png')
 
+                # Recolor the map icon if appropriate and layer the map icon with the base icon.
                 if base_item_type['Id'] not in MAPS_TO_SKIP_COLORING_AND_COMPOSITING:
                     color = None
                     if 5 < tier <= 10:
