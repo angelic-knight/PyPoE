@@ -2319,11 +2319,6 @@ specification = Specification({
                 key='AchievementItems.dat',
             ),
             Field(
-                name='ItemThemesKey',
-                type='ulong',
-                key='ItemThemes.dat',
-            ),
-            Field(
                 name='IdentifyMagic_AchievementItemsKeys',
                 type='ref|list|ulong',
                 key='AchievementItems.dat',
@@ -2341,19 +2336,19 @@ specification = Specification({
             Field(
                 name='ItemShopType',
                 type='ulong',
-                key='ItemShopType.dat',
+                #key='ItemShopType.dat', #This dat file is missing?
             ),
             Field(
                 name='Key0',
                 type='ulong',
             ),
             Field(
-                name='Key1',
-                type='ulong',
-            ),
-            Field(
                 name='Flag1',
                 type='bool',
+            ),
+            Field(
+                name='Key1',
+                type='ulong',
             ),
         ),
     ),
@@ -4084,6 +4079,14 @@ specification = Specification({
                 name='Unknown1',
                 type='int',
             ),
+            Field(
+                name='Unknown2',
+                type='int',
+            ),
+            Field(
+                name='Flag1',
+                type='bool',
+            ),
         ),
     ),
     'BuffVisualOrbArt.dat': File(
@@ -4162,6 +4165,10 @@ specification = Specification({
             Field(
                 name='Flag1',
                 type='bool',
+            ),
+            Field(
+                name='Unknown6',
+                type='int',
             ),
         ),
     ),
@@ -5453,9 +5460,21 @@ specification = Specification({
                 type='ref|list|ulong',
             ),
             Field(
+                name='Keys2',
+                type='ref|list|ulong',
+            ),
+            Field(
                 name='Key2',
                 type='ulong',
             ),
+            Field(
+                name='Key3',
+                type='ulong',
+            ),
+            Field(
+                name='Unknown1',
+                type='int'
+            )
         ),
     ),
     'CurrencyStashTabLayout.dat': File(
@@ -12365,8 +12384,8 @@ specification = Specification({
                 type='ref|string',
             ),
             Field(
-                name='Category',
-                type='ref|string',
+                name='Keys-1',
+                type='ulong',
             ),
             Field(
                 name='ItemClassCategory',
@@ -12446,6 +12465,10 @@ specification = Specification({
                 name='Flag0',
                 type='bool',
             ),
+            Field( # added in 3.17
+                name='Flag1',
+                type='bool',
+            )
         ),
     ),
     'ItemCostPerLevel.dat': File(
@@ -15671,6 +15694,10 @@ specification = Specification({
                 type='ref|list|ulong',
                 key='ModSellPriceTypes.dat',
             ),
+            Field(
+                name='Flag0',
+                type='bool',
+            )
         ),
     ),
     'Mods.dat': File(
@@ -15791,12 +15818,14 @@ specification = Specification({
                 type='ref|string',
             ),
             Field(
-                name='Keys0',
+                name='MonsterKillAchievements',
                 type='ref|list|ulong',
+                key='AchievementItems.dat',
             ),
             Field(
-                name='Keys1',
+                name='ChestModType',
                 type='ref|list|ulong',
+                key='ModType.dat',
             ),
             Field(
                 name='Stat5Min',
@@ -15831,8 +15860,9 @@ specification = Specification({
                 type='ref|list|int',
             ),
             Field(
-                name='Data1',
-                type='ref|list|byte',
+                name='ModifyMapsAchievements',
+                type='ref|list|ulong',
+                key='AchievementItems.dat',
             ),
             Field(
                 name='IsEssenceOnlyModifier',
@@ -15860,7 +15890,7 @@ specification = Specification({
                 type='bool',
             ),
             Field(
-                name='Keys2',
+                name='CraftingItemClassRestrictions',
                 type='ref|list|ulong',
                 key='ItemClasses.dat',
             ),
@@ -15976,14 +16006,23 @@ specification = Specification({
                 name='Unknown15',
                 type='int',
             ),
-            Field(
-                name='Unknown16',
-                type='int',
-            ),
+            # Field(
+            #     name='Unknown16',
+            #     type='int',
+            # ),
             Field(
                 name='BuffTemplate',
                 type='ulong',
                 key='BuffTemplates.dat',
+            ),
+            Field(
+                name='ArchnemesisMinionMod',
+                type='ulong',
+                key='Mods.dat',
+            ),
+            Field(
+                name='Hash32',
+                type='int',
             ),
         ),
         virtual_fields=(
@@ -18934,6 +18973,11 @@ specification = Specification({
                 type='ulong',
                 key='PassiveSkillMasteryGroups.dat',
             ),
+            Field(
+                name='AtlasInfluenceSet',
+                type='ulong',
+                #key='AtlasInfluenceSets.dat', FIXME: Define spec
+            ),
         ),
         virtual_fields=(
             VirtualField(
@@ -19407,107 +19451,6 @@ specification = Specification({
             Field(
                 name='Unknown13',
                 type='int',
-            ),
-        ),
-    ),
-    'Prophecies.dat': File(
-        fields=(
-            Field(
-                name='Id',
-                type='ref|string',
-                unique=True,
-            ),
-            Field(
-                name='PredictionText',
-                type='ref|string',
-            ),
-            Field(
-                name='Unknown0',
-                type='int',
-                unique=True,
-            ),
-            Field(
-                name='Name',
-                type='ref|string',
-            ),
-            Field(
-                name='FlavourText',
-                type='ref|string',
-            ),
-            Field(
-                name='QuestTracker_ClientStringsKeys',
-                type='ref|list|ulong',
-                key='ClientStrings.dat',
-            ),
-            Field(
-                name='OGGFile',
-                type='ref|string',
-                file_path=True,
-                file_ext='.ogg',
-            ),
-            Field(
-                name='ProphecyChainKey',
-                type='ulong',
-                key='ProphecyChain.dat',
-            ),
-            Field(
-                name='ProphecyChainPosition',
-                type='int',
-            ),
-            Field(
-                name='IsEnabled',
-                type='bool',
-            ),
-            Field(
-                name='SealCost',
-                type='int',
-            ),
-            Field(
-                name='PredictionText2',
-                type='ref|string',
-            ),
-        ),
-    ),
-    'ProphecyChain.dat': File(
-        fields=(
-            Field(
-                name='Id',
-                type='ref|string',
-                unique=True,
-            ),
-            Field(
-                name='Unknown0',
-                type='int',
-            ),
-            Field(
-                name='Data0',
-                type='ref|list|int',
-            ),
-            Field(
-                name='Data1',
-                type='ref|list|int',
-            ),
-            Field(
-                name='Unknown1',
-                type='int',
-            ),
-            Field(
-                name='Unknown2',
-                type='int',
-            ),
-        ),
-    ),
-    'ProphecyType.dat': File(
-        fields=(
-            Field(
-                name='Id',
-                type='ref|string',
-                unique=True,
-            ),
-            Field(
-                name='Unknown0',
-                type='int',
-                unique=True,
             ),
         ),
     ),

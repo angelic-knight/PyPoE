@@ -578,7 +578,11 @@ class DatReader(ReprMixin):
             casts = []
             remainder = k.type
             while remainder:
-                remainder, cast_type = self._get_cast_type(remainder)
+                try:
+                    remainder, cast_type = self._get_cast_type(remainder)
+                except UnboundLocalError as e:
+                    warnings.warn(f'{_file_name}, field {k.name} has unknown cast type.')
+                    raise e
                 casts.append(cast_type)
             self.cast_size += casts[0][1]
 

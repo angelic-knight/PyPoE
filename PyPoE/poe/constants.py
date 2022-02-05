@@ -723,6 +723,7 @@ class MOD_DOMAIN(IntEnumOverride):
     UNKNOWN_3_15_1 = 27
     UNKNOWN_3_15_2 = 28
     UNDEFINED = 29
+    UNKNOWN_3_17 = 30
 
     # legacy names
     MASTER = CRAFTED
@@ -802,6 +803,10 @@ class MOD_GENERATION_TYPE(IntEnumOverride):
     SCOURGE_BENEFIT = 24
     SCOURGE_DETRIMENT = 25
     SCOURGE_GIMMICK = 26
+    SOMETHING_NEW = 27
+    SOMETHING_ELSE_NEW = 28
+    ANOTHER_NEW_TYPE = 29
+    THIRTIETH_TYPE = 30
 
 
 class WORDLISTS(IntEnumOverride):

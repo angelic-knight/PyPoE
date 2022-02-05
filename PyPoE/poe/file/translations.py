@@ -2374,6 +2374,18 @@ TranslationQuantifier(
 )
 
 TranslationQuantifier(
+    id='divide_by_ten_1dp_if_required',
+    handler=lambda v: round(v/10, 1),
+    reverse_handler=lambda v: v*10,
+)
+
+TranslationQuantifier(
+    id='divide_by_fifty',
+    handler=lambda v: v/50,
+    reverse_handler=lambda v: v*50,
+)
+
+TranslationQuantifier(
     id='canonical_line',
     type=TranslationQuantifier.QuantifierTypes.STRING,
     arg_size=0,
