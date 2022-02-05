@@ -845,8 +845,40 @@ class ItemsParser(SkillParserShared):
             # =================================================================
             # Quivers
             # =================================================================
-
+            
+            # Serrated Arrow Quiver
+            'Metadata/Items/Quivers/QuiverNew1': '',
+            'Metadata/Items/Quivers/Quiver6': ' (legacy)',
             'Metadata/Items/Quivers/QuiverDescent': ' (Descent)',
+
+            # Two-Point Arrow Quiver
+            'Metadata/Items/Quivers/QuiverNew7': '',
+            'Metadata/Items/Quivers/Quiver7': ' (legacy)',
+
+            # Sharktooth Arrow Quiver
+            'Metadata/Items/Quivers/QuiverNew3': '',
+            'Metadata/Items/Quivers/Quiver8': ' (legacy)',
+
+            # Blunt Arrow Quiver
+            'Metadata/Items/Quivers/QuiverNew6': '',
+            'Metadata/Items/Quivers/Quiver9': ' (legacy)',
+
+            # Fire Arrow Quiver
+            'Metadata/Items/Quivers/QuiverNew2': '',
+            'Metadata/Items/Quivers/Quiver10': ' (legacy)',
+
+            # Broadhead Arrow Quiver
+            'Metadata/Items/Quivers/QuiverNew10': '',
+            'Metadata/Items/Quivers/Quiver11': ' (legacy)',
+
+            # Penetrating Arrow Quiver
+            'Metadata/Items/Quivers/QuiverNew5': '',
+            'Metadata/Items/Quivers/Quiver12': ' (legacy)',
+
+            # Spike-Point Arrow Quiver
+            'Metadata/Items/Quivers/QuiverNew8': '',
+            'Metadata/Items/Quivers/Quiver13': ' (legacy)',
+
             # =================================================================
             # Rings
             # =================================================================
