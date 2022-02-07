@@ -1846,34 +1846,12 @@ specification = Specification({
                 key='FlavourText.dat',
             ),
             Field(
-                name='AtlasRegionsKey',
-                type='ulong',
-                key='AtlasRegions.dat',
+                name='Unknown0',
+                type='int',
             ),
             Field(
-                name='AtlasNodeKeys0',
-                type='ref|list|ref|generic',
-                key='AtlasNode.dat',
-            ),
-            Field(
-                name='AtlasNodeKeys1',
-                type='ref|list|ref|generic',
-                key='AtlasNode.dat',
-            ),
-            Field(
-                name='AtlasNodeKeys2',
-                type='ref|list|ref|generic',
-                key='AtlasNode.dat',
-            ),
-            Field(
-                name='AtlasNodeKeys3',
-                type='ref|list|ref|generic',
-                key='AtlasNode.dat',
-            ),
-            Field(
-                name='AtlasNodeKeys4',
-                type='ref|list|ref|generic',
-                key='AtlasNode.dat',
+                name='Unknown1',
+                type='int',
             ),
             Field(
                 name='Tier0',
@@ -1916,90 +1894,14 @@ specification = Specification({
                 type='float',
             ),
             Field(
-                name='Y0',
-                type='float',
-            ),
-            Field(
-                name='Y1',
-                type='float',
-            ),
-            Field(
-                name='Y2',
-                type='float',
-            ),
-            Field(
-                name='Y3',
-                type='float',
-            ),
-            Field(
-                name='Y4',
-                type='float',
-            ),
-            Field(
-                name='Unknown0',
-                type='float',
-            ),
-            Field(
-                name='Unknown1',
-                type='float',
-            ),
-            Field(
-                name='Unknown2',
-                type='float',
-            ),
-            Field(
-                name='Unknown3',
-                type='float',
-            ),
-            Field(
-                name='Unknown4',
-                type='float',
-            ),
-            Field(
-                name='Unknown5',
-                type='int',
-            ),
-            Field(
-                name='Unknown6',
-                type='int',
-            ),
-            Field(
-                name='Unknown7',
-                type='int',
-            ),
-            Field(
-                name='Unknown8',
-                type='int',
-            ),
-            Field(
-                name='Unknown9',
-                type='int',
-            ),
-            Field(
-                name='Unknown10',
-                type='int',
-            ),
-            Field(
-                name='Unknown11',
-                type='int',
-            ),
-            Field(
-                name='Unknown12',
-                type='int',
-            ),
-            Field(
-                name='Unknown13',
-                type='int',
-            ),
-            Field(
-                name='Unknown14',
-                type='int',
-            ),
-            Field(
                 name='DDSFile',
                 type='ref|string',
                 file_path=True,
                 file_ext='.dds',
+            ),
+            Field(
+                name='Flag1',
+                type='bool',
             ),
         ),
     ),
@@ -15706,324 +15608,324 @@ specification = Specification({
                 name='Id',
                 type='ref|string',
                 unique=True,
-            ),
+            ), # 4 Bytes
             Field(
-                name='Hash',
+                name='Hash16',
                 type='int',
-            ),
+            ), # 8 Bytes
             Field(
                 name='ModTypeKey',
                 type='ulong',
                 key='ModType.dat',
-            ),
+            ), # 16 Bytes
             Field(
                 name='Level',
                 type='int',
-            ),
+            ), # 20 Bytes
             Field(
                 name='StatsKey1',
                 type='ulong',
                 key='Stats.dat',
-            ),
+            ), # 28 Bytes
             Field(
                 name='StatsKey2',
                 type='ulong',
                 key='Stats.dat',
-            ),
+            ), # 36 Bytes
             Field(
                 name='StatsKey3',
                 type='ulong',
                 key='Stats.dat',
-            ),
+            ), # 44 Bytes
             Field(
                 name='StatsKey4',
                 type='ulong',
                 key='Stats.dat',
-            ),
+            ), # 52 Bytes
             Field(
                 name='Domain',
                 type='int',
                 enum='MOD_DOMAIN',
-            ),
+            ), # 56 Bytes
             Field(
                 name='Name',
                 type='ref|string',
-            ),
+            ), # 60 Bytes
             Field(
                 name='GenerationType',
                 type='int',
                 enum='MOD_GENERATION_TYPE',
-            ),
+            ), # 64 Bytes
             Field(
                 name='CorrectGroup',
                 type='ref|string',
-            ),
+            ), # 68 Bytes
             Field(
                 name='Stat1Min',
                 type='int',
-            ),
+            ), # 72 Bytes
             Field(
                 name='Stat1Max',
                 type='int',
-            ),
+            ), # 76 Bytes
             Field(
                 name='Stat2Min',
                 type='int',
-            ),
+            ), # 80 Bytes
             Field(
                 name='Stat2Max',
                 type='int',
-            ),
+            ), # 84 Bytes
             Field(
                 name='Stat3Min',
                 type='int',
-            ),
+            ), # 88 Bytes
             Field(
                 name='Stat3Max',
                 type='int',
-            ),
+            ), # 92 Bytes
             Field(
                 name='Stat4Min',
                 type='int',
-            ),
+            ), # 96 Bytes
             Field(
                 name='Stat4Max',
                 type='int',
-            ),
+            ), # 100 Bytes
             Field(
                 name='SpawnWeight_TagsKeys',
                 type='ref|list|ulong',
                 key='Tags.dat',
-            ),
+            ), # 108 Bytes
             Field(
                 name='SpawnWeight_Values',
                 type='ref|list|int',
-            ),
+            ), # 116 Bytes
             Field(
                 name='TagsKeys',
                 type='ref|list|ulong',
                 key='Tags.dat',
-            ),
+            ), # 124 Bytes
             Field(
                 name='GrantedEffectsPerLevelKeys',
                 type='ref|list|ulong',
                 key='GrantedEffectsPerLevel.dat',
-            ),
+            ), # 132 Bytes
             Field(
                 name='Data0',
                 type='ref|list|int',
-            ),
+            ), # 140 Bytes
             Field(
                 name='MonsterMetadata',
                 type='ref|string',
-            ),
+            ), # 144 Bytes
             Field(
                 name='MonsterKillAchievements',
                 type='ref|list|ulong',
                 key='AchievementItems.dat',
-            ),
+            ), # 152 Bytes
             Field(
                 name='ChestModType',
                 type='ref|list|ulong',
                 key='ModType.dat',
-            ),
+            ), # 160 Bytes
             Field(
                 name='Stat5Min',
                 type='int',
-            ),
+            ), # 164 Bytes
             Field(
                 name='Stat5Max',
                 type='int',
-            ),
+            ), # 168 Bytes
             Field(
                 name='StatsKey5',
                 type='ulong',
                 key='Stats.dat',
-            ),
+            ), # 176 Bytes
             Field(
                 name='FullAreaClear_AchievementItemsKey',
                 type='ref|list|ulong',
                 key='AchievementItems.dat',
-            ),
+            ), # 184 Bytes
             Field(
                 name='AchievementItemsKey',
                 type='ref|list|ulong',
                 key='AchievementItems.dat',
-            ),
+            ), # 192 Bytes
             Field(
                 name='GenerationWeight_TagsKeys',
                 type='ref|list|ulong',
                 key='Tags.dat',
-            ),
+            ), # 200 Bytes
             Field(
                 name='GenerationWeight_Values',
                 type='ref|list|int',
-            ),
+            ), # 208 Bytes
             Field(
                 name='ModifyMapsAchievements',
                 type='ref|list|ulong',
                 key='AchievementItems.dat',
-            ),
+            ), # 216 Bytes
             Field(
                 name='IsEssenceOnlyModifier',
                 type='bool',
-            ),
+            ), # 217 Bytes
             Field(
                 name='Stat6Min',
                 type='int',
-            ),
+            ), # 221 Bytes
             Field(
                 name='Stat6Max',
                 type='int',
-            ),
+            ), # 225 Bytes
             Field(
                 name='StatsKey6',
                 type='ulong',
                 key='Stats.dat',
-            ),
+            ), # 233 Bytes
             Field(
                 name='MaxLevel',
                 type='int',
-            ),
+            ), # 237 Bytes
             Field(
                 name='Flag0',
                 type='bool',
-            ),
+            ), # 238 Bytes
             Field(
                 name='CraftingItemClassRestrictions',
                 type='ref|list|ulong',
                 key='ItemClasses.dat',
-            ),
+            ), # 246 Bytes
             Field(
                 name='MonsterOnDeath',
                 type='ref|string',
-            ),
+            ), # 250 Bytes
             Field(
                 name='Unknown0',
                 type='int',
-            ),
+            ), # 254 Bytes
             Field(
                 name='Keys3',
                 type='ref|list|ulong',
                 key='GrantedEffectsPerLevel.dat',
-            ),
+            ), # 262 Bytes
             Field(
                 name='Heist_SubStatValue1',
                 type='int',
-            ),
+            ), # 266 Bytes
             Field(
                 name='Heist_SubStatValue2',
                 type='int',
-            ),
+            ), # 270 Bytes
             Field(
                 name='Heist_StatsKey0',
                 type='ulong',
                 key='Stats.dat',
-            ),
+            ), # 278 Bytes
             Field(
                 name='Heist_StatsKey1',
                 type='ulong',
                 key='Stats.dat',
-            ),
+            ), # 286 Bytes
             Field(
                 name='Heist_AddStatValue1',
                 type='int',
-            ),
+            ), # 290 Bytes
             Field(
                 name='Heist_AddStatValue2',
                 type='int',
-            ),
+            ), # 294 Bytes
             Field(
                 name='InfluenceTypes',
                 type='int',
-            ),
+            ), # 298 Bytes
             Field(
                 name='ImplicitTagsKeys',
                 type='ref|list|ulong',
                 key='Tags.dat',
-            ),
+            ), # 306 Bytes
             Field(
                 name='Unknown1',
                 type='int',
-            ),
+            ), # 310 Bytes
             Field(
                 name='Flag1',
                 type='bool',
-            ),
+            ), # 311 Bytes
             Field(
                 name='Unknown2',
                 type='int',
-            ),
+            ), # 315 Bytes
             Field(
                 name='Unknown3',
                 type='int',
-            ),
+            ), # 319 Bytes
             Field(
                 name='Unknown4',
                 type='int',
-            ),
+            ), # 323 Bytes
             Field(
                 name='Unknown5',
                 type='int',
-            ),
+            ), # 327 Bytes
             Field(
                 name='Unknown6',
                 type='int',
-            ),
+            ), # 331 Bytes
             Field(
                 name='Unknown7',
                 type='int',
-            ),
+            ), # 335 Bytes
             Field(
                 name='Unknown8',
                 type='int',
-            ),
+            ), # 339 Bytes
             Field(
                 name='Unknown9',
                 type='int',
-            ),
+            ), # 343 Bytes
             Field(
                 name='Unknown10',
                 type='int',
-            ),
+            ), # 347 Bytes
             Field(
                 name='Unknown11',
                 type='int',
-            ),
+            ), # 351 Bytes
             Field(
                 name='Unknown12',
                 type='int',
-            ),
+            ), # 355 Bytes
             Field(
                 name='Unknown13',
                 type='int',
-            ),
+            ), # 359 Bytes
             Field(
                 name='Unknown14',
                 type='int',
-            ),
+            ), # 363 Bytes
             Field(
                 name='Unknown15',
                 type='int',
-            ),
-            # Field(
-            #     name='Unknown16',
-            #     type='int',
-            # ),
+            ), # 367 Bytes
+            Field(
+                name='Unknown16',
+                type='int',
+            ), # 371 Bytes
             Field(
                 name='BuffTemplate',
                 type='ulong',
                 key='BuffTemplates.dat',
-            ),
+            ), # 379 Bytes
             Field(
                 name='ArchnemesisMinionMod',
-                type='ulong',
+                type='int',
                 key='Mods.dat',
-            ),
+            ), # 383 Bytes
             Field(
                 name='Hash32',
                 type='int',
-            ),
+            ), # 387 Bytes
         ),
         virtual_fields=(
             VirtualField(
