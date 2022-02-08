@@ -4069,7 +4069,8 @@ class ItemsParser(SkillParserShared):
                 # or harbinger
                 atlas_node = None
             
-            # Save off the atlas_node for each map in the series
+            # Save off the atlas_node for each map in the series, 
+            # filtering to the maps from the names command argument if it was provided.
             if (names and maps['BaseItemTypesKey']['Name'] in names) or not names:
                 map_series_tiers[row] = atlas_node
 
@@ -4255,8 +4256,9 @@ class ItemsParser(SkillParserShared):
                     color = None
                     if 5 < tier <= 10:
                         color = self._MAP_COLORS['mid tier']
-                    elif 10 < tier <= 15:
+                    if 10 < tier <= 15:
                         color = self._MAP_COLORS['high tier']
+
                     if color:
                         os.system(
                             '''magick convert "%s" -fill rgb(%s) -colorize 100 "%s"''' % (
