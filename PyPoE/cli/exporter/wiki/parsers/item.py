@@ -387,6 +387,7 @@ class ItemsParser(SkillParserShared):
         'Ultimatum': '3.14.0',
         'Expedition': '3.15.0',
         'Hellscape': '3.16.0', # AKA Scourge
+        'Archnemesis': '3.17.0',
     }
 
     _IGNORE_DROP_LEVEL_CLASSES = (
@@ -3950,8 +3951,6 @@ class ItemsParser(SkillParserShared):
 
                     # infobox['atlas_x'] = atlas_node['X']
                     # infobox['atlas_y'] = atlas_node['Y']
-                    infobox['atlas_region_id'] = atlas_node['AtlasRegionsKey'][
-                        'Id']
 
                     minimum = 0
                     connections = defaultdict(
@@ -3959,27 +3958,26 @@ class ItemsParser(SkillParserShared):
                     for i in range(0, 5):
                         tier = atlas_node['Tier%s' % i]
                         infobox['atlas_x%s' % i] = atlas_node['X%s' % i]
-                        infobox['atlas_y%s' % i] = atlas_node['Y%s' % i]
                         infobox['atlas_map_tier%s' % i] = tier
                         if tier:
                             if minimum == 0:
                                 minimum = i
 
-                        for atlas_node2 in atlas_node['AtlasNodeKeys%s' % i]:
-                            ivi = atlas_node2['ItemVisualIdentityKey']
-                            if ivi['IsAtlasOfWorldsMapIcon']:
-                                key = self._format_map_name(
-                                    atlas_node2['MapsKey']['BaseItemTypesKey'],
-                                    map_series,
-                                )
-                            else:
-                                key = '%s (%s)' % (
-                                    self.rr['UniqueMaps.dat'].index[
-                                        'ItemVisualIdentityKey'][ivi][
-                                        'WordsKey']['Text'],
-                                    map_series['Name']
-                                )
-                            connections[key][i] = 'True'
+                        # for atlas_node2 in atlas_node['AtlasNodeKeys%s' % i]:
+                        ivi = atlas_node['ItemVisualIdentityKey']
+                        if ivi['IsAtlasOfWorldsMapIcon']:
+                            key = self._format_map_name(
+                                atlas_node['MapsKey']['BaseItemTypesKey'],
+                                map_series,
+                            )
+                        else:
+                            key = '%s (%s)' % (
+                                self.rr['UniqueMaps.dat'].index[
+                                    'ItemVisualIdentityKey'][ivi][
+                                    'WordsKey']['Text'],
+                                map_series['Name']
+                            )
+                        connections[key][i] = 'True'
 
                     infobox['atlas_region_minimum'] = minimum
                     for i, (k, v) in enumerate(connections.items(), start=1):
