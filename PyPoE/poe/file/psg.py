@@ -48,7 +48,9 @@ API for internal use, but still may be useful to work with more directly.
 # =============================================================================
 
 # Python
+from logging import root
 import struct
+import warnings
 from collections import OrderedDict
 
 # 3rd-party
@@ -57,6 +59,7 @@ from collections import OrderedDict
 from PyPoE.shared.mixins import ReprMixin
 from PyPoE.poe.file.shared import AbstractFileReadOnly
 from PyPoE.poe.file.dat import DatFile, RelationalReader
+from PyPoE.cli.core import console
 
 # =============================================================================
 # Globals
@@ -263,6 +266,7 @@ class PSGFile(AbstractFileReadOnly):
             self._passive_skills.build_index('PassiveSkillGraphId')
 
     def _read(self, buffer, *args, **kwargs):
+        console('Parsing the .psg file...')
         data = buffer.read()
         offset = 0
 
@@ -271,9 +275,9 @@ class PSGFile(AbstractFileReadOnly):
         offset += 1
 
         unknown_length = 8 
-        #We used to be able to fetch the count of throwaway unknown data from the start of the .psg, but it doesn't work
-        #as of 3.16. Manually, I looked for where there's a 32 bit unsigned int equal to 7, and ignored everything before it.
-        #unknown_length = struct.unpack_from('<B', data, offset=offset)[0]
+        # We used to be able to fetch the count of throwaway unknown data from the start of the .psg, but it doesn't work
+        # as of 3.16. Manually, I looked for where there's a 32 bit unsigned int equal to 7, and ignored everything before it.
+        # unknown_length = struct.unpack_from('<B', data, offset=offset)[0]
         offset += 1
 
 
@@ -288,6 +292,7 @@ class PSGFile(AbstractFileReadOnly):
                 f'root_length is unrealistically large at {root_length}.\nStopping to prevent allocating too much memory'
             ) 
         offset += 4
+        console(f'root_length is {root_length}')
 
         self.root_passives = list(struct.unpack_from(
             '<' + 'I'*root_length, data, offset=offset
@@ -299,10 +304,12 @@ class PSGFile(AbstractFileReadOnly):
 
         self.groups = []
         for i in range(0, group_length):
-            x, y, flag, passive_length = struct.unpack_from(
-                '<ffbI', data, offset=offset
+            # This passive header format was divined by skipping root_length*4 bytes after the root_length integer,
+            #   and then figuring out which integer gave us a reasonable (aka small) passive_length value
+            x, y, flag, unknown1, unknown2, passive_length = struct.unpack_from(
+                '<ffIIbI', data, offset=offset
             )
-            offset += 4*2+4+1
+            offset += 4*2+4+4*2+1
 
             group = GraphGroup(x=x, y=y, id=len(self.groups), flag=flag)
 
@@ -311,21 +318,23 @@ class PSGFile(AbstractFileReadOnly):
                     '<IIII', data, offset=offset
                 )
                 offset += 4*4
-
-                connections = struct.unpack_from(
-                    '<' + 'I'*connections_length, data, offset=offset
-                )
-                offset += 4*connections_length
-
-                group.nodes.append(
-                    GraphGroupNode(
-                        parent=group,
-                        passive_skill=rowid,
-                        radius=radius,
-                        position=position,
-                        connections=list(connections),
+                if(connections_length > 1000):
+                    warnings.warn(f'There are unrealistically many connections ({connections_length}) at {rowid}.\nSkipping to prevent allocating too much memory') 
+                else:
+                    connections = struct.unpack_from(
+                        '<' + 'I'*connections_length, data, offset=offset
                     )
-                )
+                    group.nodes.append(
+                        GraphGroupNode(
+                            parent=group,
+                            passive_skill=rowid,
+                            radius=radius,
+                            position=position,
+                            connections=list(connections),
+                        )
+                    )
+
+                offset += 4*connections_length
 
             self.groups.append(group)
 

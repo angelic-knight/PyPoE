@@ -721,7 +721,7 @@ class MOD_DOMAIN(IntEnumOverride):
     WATCHSTONE = 25
     VEILED = 26
     EXPEDITION_RELIC = 27
-    JUN_MASTER_VEILED = 28
+    UNVEILED = 28
     PRIMORDIAL_ALTAR = 29
     UNCRAFTABLE_OR_SOMETHING = 30 # Used in BaseItemTypes.dat, not Mods.dat.
 

@@ -2236,12 +2236,11 @@ specification = Specification({
                 type='bool',
             ),
             Field(
-                name='ItemShopType',
+                name='Key0',
                 type='ulong',
-                #key='ItemShopType.dat', #This dat file is missing?
             ),
             Field(
-                name='Key0',
+                name='Key1',
                 type='ulong',
             ),
             Field(
@@ -2249,7 +2248,7 @@ specification = Specification({
                 type='bool',
             ),
             Field(
-                name='Key1',
+                name='Key2',
                 type='ulong',
             ),
         ),
@@ -12286,7 +12285,7 @@ specification = Specification({
                 type='ref|string',
             ),
             Field(
-                name='Keys-1',
+                name='Keys0',
                 type='ulong',
             ),
             Field(
@@ -12299,11 +12298,11 @@ specification = Specification({
                 type='bool',
             ),
             Field(
-                name='Keys0',
+                name='Keys1',
                 type='ref|list|ulong',
             ),
             Field(
-                name='Keys1',
+                name='Keys2',
                 type='ref|list|ulong',
             ),
             Field(
