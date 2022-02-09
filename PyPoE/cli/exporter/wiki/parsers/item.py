@@ -4094,7 +4094,6 @@ class ItemsParser(SkillParserShared):
 
             base_ico = base_ico.replace('.dds', '.png')
 
-        #
         self.rr['MapSeriesTiers.dat'].build_index('MapsKey')
         self.rr['MapPurchaseCosts.dat'].build_index('Tier')
         self.rr['UniqueMaps.dat'].build_index('ItemVisualIdentityKey')
@@ -4133,6 +4132,7 @@ class ItemsParser(SkillParserShared):
             else:
                 infobox['inventory_icon'] = name
 
+            starting_tier = tier
             if atlas_node:
                 if latest:
 
@@ -4254,10 +4254,11 @@ class ItemsParser(SkillParserShared):
                 # Recolor the map icon if appropriate and layer the map icon with the base icon.
                 if base_item_type['Id'] not in MAPS_TO_SKIP_COLORING_AND_COMPOSITING:
                     color = None
-                    if 5 < tier <= 10:
-                        color = self._MAP_COLORS['mid tier']
-                    if 10 < tier <= 15:
-                        color = self._MAP_COLORS['high tier']
+                    if 'atlas_region_minimum' in infobox.keys():
+                        if 5 < starting_tier <= 10:
+                            color = self._MAP_COLORS['mid tier']
+                        if 10 < starting_tier:
+                            color = self._MAP_COLORS['high tier']
 
                     if color:
                         os.system(

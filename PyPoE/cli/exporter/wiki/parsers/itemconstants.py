@@ -50,6 +50,7 @@ MAPS_IN_SERIES_BUT_NOT_ON_ATLAS = {
     'Metadata/Items/Maps/MapWorldsChimera',
     'Metadata/Items/Maps/MapWorldsHydra',
     'Metadata/Items/Maps/MapWorldsMinotaur',
+    'Metadata/Items/Maps/MapWorldsVaalTemple'
 }
 
 MAPS_TO_SKIP_COLORING_AND_COMPOSITING = {
