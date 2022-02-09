@@ -3963,7 +3963,6 @@ class ItemsParser(SkillParserShared):
                             if minimum == 0:
                                 minimum = i
 
-                        # for atlas_node2 in atlas_node['AtlasNodeKeys%s' % i]:
                         ivi = atlas_node['ItemVisualIdentityKey']
                         if ivi['IsAtlasOfWorldsMapIcon']:
                             key = self._format_map_name(
