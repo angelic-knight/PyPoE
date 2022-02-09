@@ -22981,6 +22981,10 @@ specification = Specification({
                 name='Unknown3',
                 type='int',
             ),
+            Field(
+                name='IsDisabled',
+                type='bool',
+            ),
         ),
     ),
     'VirtualStatContextFlags.dat': File(
