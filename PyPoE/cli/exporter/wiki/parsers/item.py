@@ -41,7 +41,7 @@ from functools import partialmethod
 
 # Self
 from PyPoE.poe.constants import RARITY
-from PyPoE.cli.exporter.wiki.parsers.itemconstants import MAPS_IN_SERIES_BUT_NOT_ON_ATLAS, MAPS_TO_SKIP_COLORING_AND_COMPOSITING
+from PyPoE.cli.exporter.wiki.parsers.itemconstants import MAPS_IN_SERIES_BUT_NOT_ON_ATLAS, MAPS_TO_SKIP_COLORING, MAPS_TO_SKIP_COMPOSITING
 from PyPoE.poe.file.dat import RelationalReader
 from PyPoE.poe.file.ot import OTFile
 from PyPoE.poe.sim.formula import gem_stat_requirement, GemTypes
@@ -4252,20 +4252,21 @@ class ItemsParser(SkillParserShared):
                 ico = ico.replace('.dds', '.png')
 
                 # Recolor the map icon if appropriate and layer the map icon with the base icon.
-                if base_item_type['Id'] not in MAPS_TO_SKIP_COLORING_AND_COMPOSITING:
+                if base_item_type['Id'] not in MAPS_TO_SKIP_COLORING:
                     color = None
-                    if 'atlas_region_minimum' in infobox.keys():
-                        if 5 < starting_tier <= 10:
-                            color = self._MAP_COLORS['mid tier']
-                        if 10 < starting_tier:
-                            color = self._MAP_COLORS['high tier']
+                    if 5 < starting_tier <= 10:
+                        color = self._MAP_COLORS['mid tier']
+                    if 10 < starting_tier:
+                        color = self._MAP_COLORS['high tier']
 
+                    # This isn't how the game actually makes these map icons, so it isn't ideal, but it works.
                     if color:
                         os.system(
                             '''magick convert "%s" -fill rgb(%s) -colorize 100 "%s"''' % (
                             ico, color, ico
                         ))
 
+                if base_item_type['Id'] not in MAPS_TO_SKIP_COMPOSITING:
                     os.system(
                         'magick composite -gravity center "%s" "%s" "%s"' % (
                         ico, base_ico, ico
