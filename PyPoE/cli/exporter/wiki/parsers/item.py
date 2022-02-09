@@ -4208,7 +4208,7 @@ class ItemsParser(SkillParserShared):
 
             r.add_result(
                 text=cond,
-                out_file='map_%s.txt' % name,
+                out_file=f'map_{name}.txt',
                 wiki_page=[
                     {
                         'page': name,
@@ -4229,10 +4229,7 @@ class ItemsParser(SkillParserShared):
 
                 # Warn about and skip maps that are on atlas but have no icon.
                 elif atlas_node is not None and not atlas_node['ItemVisualIdentityKey']['DDSFile']:
-                    warnings.warn(
-                        'Missing 2d art inventory icon for item "%s"' %
-                        base_item_type['Name']
-                    )
+                    warnings.warn(f'Missing 2d art inventory icon for item "{base_item_type["Name"]}"')
                     continue
                 
                 ico = os.path.join(self._img_path, name + ' inventory icon.dds')
@@ -4262,15 +4259,13 @@ class ItemsParser(SkillParserShared):
                     # This isn't how the game actually makes these map icons, so it isn't ideal, but it works.
                     if color:
                         os.system(
-                            '''magick convert "%s" -fill rgb(%s) -colorize 100 "%s"''' % (
-                            ico, color, ico
-                        ))
+                            f'magick convert "{ico}" -fill rgb({color}) -colorize 100 "{ico}"'
+                        )
 
                 if base_item_type['Id'] not in MAPS_TO_SKIP_COMPOSITING:
                     os.system(
-                        'magick composite -gravity center "%s" "%s" "%s"' % (
-                        ico, base_ico, ico
-                    ))
+                        f'magick composite -gravity center "{ico}" "{base_ico}" "{ico}"'
+                    )
 
         return r
 
