@@ -3914,7 +3914,7 @@ class ItemsParser(SkillParserShared):
 
         self.rr['MapSeriesTiers.dat'].build_index('MapsKey')
         self.rr['MapPurchaseCosts.dat'].build_index('Tier')
-        self.rr['UniqueMaps.dat'].build_index('ItemVisualIdentityKey')
+        # self.rr['UniqueMaps.dat'].build_index('WorldAreasKey')
 
         for row, atlas_node in map_series_tiers.items():
             maps = row['MapsKey']
@@ -3965,27 +3965,26 @@ class ItemsParser(SkillParserShared):
                     connections = defaultdict(
                         lambda: ['False' for i in range(0, 5)])
                     for i in range(0, 5):
+                        # We don't know what these coordinates are for at this point.
+                        # infobox['atlas_x%s' % i] = atlas_node['X%s' % i]
                         tier = atlas_node['Tier%s' % i]
-                        infobox['atlas_x%s' % i] = atlas_node['X%s' % i]
                         infobox['atlas_map_tier%s' % i] = tier
                         if tier:
                             if minimum == 0:
                                 minimum = i
 
-                        ivi = atlas_node['ItemVisualIdentityKey']
-                        if ivi['IsAtlasOfWorldsMapIcon']:
-                            key = self._format_map_name(
-                                atlas_node['MapsKey']['BaseItemTypesKey'],
-                                map_series,
-                            )
-                        else:
-                            key = '%s (%s)' % (
-                                self.rr['UniqueMaps.dat'].index[
-                                    'ItemVisualIdentityKey'][ivi][
-                                    'WordsKey']['Text'],
-                                map_series['Name']
-                            )
-                        connections[key][i] = 'True'
+                    # The indexing isn't working well. It is using the entire mapped out object as keys.
+                    # We can hold off on all connections for now. It's fairly obvious that unique maps are connected to their normal counterpart.
+                    # See if there's a unique map for this base map.
+                    # unique_maps_area_index = self.rr['UniqueMaps.dat'].index['WorldAreasKey']
+                    # area = atlas_node['MapsKey']['Unique_WorldAreasKey']
+                    # if area in unique_maps_area_index:
+                    #     #print(unique_maps_area_index.keys(), flush=True)
+                    #     key = '%s (%s)' % (
+                    #         unique_maps_area_index[area]['WordsKey']['Text'],
+                    #         map_series['Name']
+                    #     )
+                    #     connections[key][1] = 'True'
 
                     infobox['atlas_region_minimum'] = minimum
                     for i, (k, v) in enumerate(connections.items(), start=1):
