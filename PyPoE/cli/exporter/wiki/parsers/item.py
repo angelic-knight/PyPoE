@@ -69,7 +69,7 @@ def _apply_column_map(infobox, column_map, list_object):
 
 
 def _type_factory(data_file, data_mapping, row_index=True, function=None,
-                  fail_condition=False):
+                  fail_condition=False, skip_warning=False):
     def func(self, infobox, base_item_type):
         try:
             if data_file == 'BaseItemTypes.dat':
@@ -79,9 +79,10 @@ def _type_factory(data_file, data_mapping, row_index=True, function=None,
                     base_item_type.rowid if row_index else base_item_type['Id']
                 ]
         except KeyError:
-            warnings.warn(
-                'Missing %s info for "%s"' % (data_file, base_item_type['Name'])
-            )
+            if not skip_warning:
+                warnings.warn(
+                    f'Missing {data_file} info for "{base_item_type["Name"]}"'
+                )
             return fail_condition
 
         _apply_column_map(infobox, data_mapping, data)
@@ -752,6 +753,10 @@ class ItemsParser(SkillParserShared):
             'Metadata/Items/MapFragments/Maven/MavenMapInsideBottomLeft5': " (10 bosses)",
             'Metadata/Items/MapFragments/Maven/MavenMapInsideTopLeft5': " (10 bosses)",
             'Metadata/Items/MapFragments/Maven/MavenMapInsideTopRight5': " (10 bosses)",
+            'Metadata/Items/MapFragments/Primordial/QuestTangleKey': ' (quest)',
+            'Metadata/Items/MapFragments/Primordial/QuestTangleBossKey': ' (quest)',
+            'Metadata/Items/MapFragments/Primordial/QuestCleansingFireKey': ' (quest)',
+            'Metadata/Items/MapFragments/Primordial/QuestCleansingFireBossKey': ' (quest)',
 
             #
             # Royale non-gem items
@@ -2802,16 +2807,18 @@ class ItemsParser(SkillParserShared):
     _type_microtransaction = _type_factory(
         data_file='BaseItemTypes.dat',
         data_mapping=(
-            ('ItemShopType', {
-                'template': 'cosmetic_type',
-                'format': lambda v: v['Name'],
-                'condition': lambda v: v,
-            }),
-            ('ItemThemesKey', {
-                'template': 'cosmetic_theme',
-                'format': lambda v: v['Name'],
-                'condition': lambda v: v,
-            }),
+            # This field was removed in 3.17.
+            # ('ItemShopType', {
+            #     'template': 'cosmetic_type',
+            #     'format': lambda v: v['Name'],
+            #     'condition': lambda v: v,
+            # }),
+            # This field was also removed in 3.17.
+            # ('ItemThemesKey', {
+            #     'template': 'cosmetic_theme',
+            #     'format': lambda v: v['Name'],
+            #     'condition': lambda v: v,
+            # }),
         ),
     )
 
@@ -3042,6 +3049,7 @@ class ItemsParser(SkillParserShared):
         row_index=True,
         function=_essence_extra,
         fail_condition=True,
+        skip_warning=True,
     )
 
     _type_blight_item = _type_factory(
@@ -3053,6 +3061,7 @@ class ItemsParser(SkillParserShared):
         ),
         row_index=True,
         fail_condition=True,
+        skip_warning=True,
     )
 
     _type_labyrinth_trinket = _type_factory(
