@@ -1390,7 +1390,7 @@ class CraftingBenchParser(GenericLuaParser):
             # 3.15
             # This should be accessed by keys not values
             # TODO: fix this.
-            'value': lambda v: v[0][4][0],
+            'value': lambda v: v['Hideout_NPCsKey']['NPCMasterKey']['Id'] if v['Hideout_NPCsKey']['NPCMasterKey'] else None,
         }),
         ('Order', {
             'key': 'ordinal',

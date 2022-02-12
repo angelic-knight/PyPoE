@@ -5164,10 +5164,6 @@ specification = Specification({
                 type='int',
             ),
             Field(
-                name='Flag0',
-                type='bool',
-            ),
-            Field(
                 name='Key0',
                 type='ulong',
             ),
@@ -5186,8 +5182,12 @@ specification = Specification({
                 type='ulong',
             ),
             Field(
-                name='Flag1',
+                name='Flag0',
                 type='bool',
+            ),
+            Field(
+                name='Unknown3',
+                type='int',
             ),
         ),
         virtual_fields=(
@@ -11687,6 +11687,10 @@ specification = Specification({
             Field(
                 name='Flag0',
                 type='bool',
+            ),
+            Field(
+                name='Key1',
+                type='ulong',
             ),
         ),
     ),
