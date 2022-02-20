@@ -79,6 +79,7 @@ _translation_map = {
     MOD_DOMAIN.MAP_DEVICE: 'map_stat_descriptions.txt',
     # To properly support zana's innate IIQ
     MOD_DOMAIN.CRAFTED: 'map_stat_descriptions.txt',
+    MOD_DOMAIN.HEIST_NPC: 'heist_equipment_stat_descriptions.txt',
 }
 
 # =============================================================================
@@ -231,7 +232,7 @@ class SpawnChanceCalculator:
 # Functions
 # =============================================================================
 
-def get_translation_file_from_domain(domain):
+def get_translation_file_from_domain(domain) -> str: 
     """
     Returns the likely stat translation file for a given mod domain.
 

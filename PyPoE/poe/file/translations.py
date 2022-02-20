@@ -69,6 +69,10 @@ results that contain extra information and utility methods.
 
 .. autofunction:: set_custom_translation_file
 
+.. autofunction:: get_hardcoded_translation_file
+
+.. autofunction:: set_hardcoded_translation_file
+
 .. autofunction:: install_data_dependant_quantifiers
 
 Internal API
@@ -138,10 +142,14 @@ __all__ = [
     'get_custom_translation_file',
     'set_custom_translation_file',
     'custom_translation_file',
+    'get_hardcoded_translation_file',
+    'set_hardcoded_translation_file',
+    'hardcoded_translation_file',
     'install_data_dependant_quantifiers',
 ]
 
 CUSTOM_TRANSLATION_FILE = os.path.join(DATA_DIR, 'custom_descriptions.txt')
+HARDCODED_TRANSLATION_FILE = os.path.join(DATA_DIR, 'hardcoded_descriptions.txt')
 
 regex_translation_string = re.compile(
     r'^'
@@ -172,6 +180,7 @@ regex_tokens = re.compile(
 )
 
 _custom_translation_file = None
+_hardcoded_translation_file = None
 
 # =============================================================================
 # Warnings
@@ -2021,6 +2030,45 @@ def set_custom_translation_file(file: Union[str, None] = None):
 custom_translation_file = property(
     fget=get_custom_translation_file,
     fset=set_custom_translation_file,
+)
+
+
+def get_hardcoded_translation_file() -> TranslationFile:
+    """
+    Returns the currently loaded hardcoded translation file.
+
+    Loads the default file if none is loaded.
+
+    Returns
+    -------
+    TranslationFile
+        the currently loaded hardcoded translation file
+    """
+    global _hardcoded_translation_file
+    if _hardcoded_translation_file is None:
+        set_hardcoded_translation_file()
+    return _hardcoded_translation_file
+
+
+def set_hardcoded_translation_file(file: Union[str, None] = None):
+    """
+    Sets the hardcoded translation file.
+
+    Parameters
+    ----------
+    file : str
+        Path where the hardcoded translation file is located. If None,
+        the default file will be loaded
+    """
+    global _hardcoded_translation_file
+    _hardcoded_translation_file = TranslationFile(
+        file_path=file or HARDCODED_TRANSLATION_FILE
+    )
+
+
+hardcoded_translation_file = property(
+    fget=get_hardcoded_translation_file,
+    fset=set_hardcoded_translation_file,
 )
 
 

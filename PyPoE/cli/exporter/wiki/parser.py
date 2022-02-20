@@ -70,6 +70,7 @@ from PyPoE.poe.file.translations import (
     TranslationFileCache,
     MissingIdentifierWarning,
     get_custom_translation_file,
+    get_hardcoded_translation_file,
     install_data_dependant_quantifiers,
 )
 from PyPoE.poe.file.file_system import FileSystem
@@ -1484,6 +1485,7 @@ class BaseParser:
         )
 
         self.custom = get_custom_translation_file()
+        self.hardcoded = get_hardcoded_translation_file()
 
         self._img_path = None
         self.lang = config.get_option('language')
@@ -1654,19 +1656,31 @@ class BaseParser:
             out = [make_inter_wiki_links(line) for line in result.lines]
 
         if result.missing_ids:
-            custom_result = self.custom.get_translation(
+            # Check for a hardcoded result first, using result's missing values.
+            hardcoded_result = self.hardcoded.get_translation(
                 result.missing_ids,
                 result.missing_values,
                 full_result=True,
                 lang=self.lang,
             )
 
+            # Then check for a custom result, using missing values from the hardcoded results.
+            custom_result = self.custom.get_translation(
+                hardcoded_result.missing_ids,
+                hardcoded_result.missing_values,
+                full_result=True,
+                lang=self.lang,
+            )
+
             if custom_result.missing_ids:
                 warnings.warn(
-                    'Missing translation for ids %s and values %s' % (
-                        custom_result.missing_ids, custom_result.missing_values),
+                    f'Mod {mod["Id"]}: Missing translations for ids {custom_result.missing_ids} and values {custom_result.missing_values}',
                     MissingIdentifierWarning,
                 )
+
+            for line in hardcoded_result.lines:
+                if line:
+                    out.append(make_inter_wiki_links(line))
 
             for line in custom_result.lines:
                 if line:
