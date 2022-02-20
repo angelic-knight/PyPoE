@@ -2218,7 +2218,7 @@ TranslationQuantifier(
 
 TranslationQuantifier(
     id='divide_by_ten_1dp',
-    handler=lambda v: round(v//10, 1),
+    handler=lambda v: round(v/10, 1),
     reverse_handler=lambda v: int(v)*10,
 )
 
@@ -2389,6 +2389,12 @@ TranslationQuantifier(
     id='multiply_by_ten',
     handler=lambda v: v*10,
     reverse_handler=lambda v: v/10,
+)
+
+TranslationQuantifier(
+    id='divide_by_one_thousand',
+    handler=lambda v: v/1000,
+    reverse_handler=lambda v: v*1000,
 )
 
 TranslationQuantifier(
