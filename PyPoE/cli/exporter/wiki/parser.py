@@ -1678,10 +1678,12 @@ class BaseParser:
                     MissingIdentifierWarning,
                 )
 
+            # Save hardcoded stat lines normally
             for line in hardcoded_result.lines:
                 if line:
                     out.append(make_inter_wiki_links(line))
 
+            # Save custom stat lines with "(hidden)" appended
             for line in custom_result.lines:
                 if line:
                     out.append(self._HIDDEN_FORMAT[self.lang] % line)

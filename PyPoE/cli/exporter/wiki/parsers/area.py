@@ -450,13 +450,9 @@ class AreaParser(parser.BaseParser):
                     area)
                 if map:
                     map = map[0]
-                    if str(map['MapSeriesKey'])[0] == 'MapWorlds':
-                        data['main_page'] = map['BaseItemTypesKey']['Name']
-                    else:
-                        data['main_page'] = '%s (%s)' % (
-                            map['BaseItemTypesKey']['Name'],
-                            str(map['MapSeriesKey'])[0]
-                        )
+                    # Just set the  main page to the landing page for the overall map.
+                    # Don't try to parse out map series when the column may not even match map series.
+                    data['main_page'] = map['BaseItemTypesKey']['Name']
                 elif data.get('tags') and 'map' in data['tags']:
                     map_version = None
                     for row in self.rr['MapSeries.dat']:
