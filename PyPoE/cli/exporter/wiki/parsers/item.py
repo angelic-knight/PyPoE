@@ -2872,7 +2872,8 @@ class ItemsParser(SkillParserShared):
             'Ritual',
             'Ultimatum',
             'Expedition',
-            'Scourge'
+            'Scourge',
+            'Archnemesis',
         ]
         # print('yep', map_series[d])
         return map_series[d]
@@ -3754,10 +3755,7 @@ class ItemsParser(SkillParserShared):
                 map_series['Name']
             )
         else:
-            return '%s (%s)' % (
-                base_item_type['Name'],
-                map_series['Name']
-            )
+            return f"{base_item_type['Name']} ({map_series['Name']})"
 
     def _get_map_series(self, parsed_args):
         self.rr['MapSeries.dat'].build_index('Id')
@@ -4028,7 +4026,7 @@ class ItemsParser(SkillParserShared):
                 out_file=f'map_{name}.txt',
                 wiki_page=[
                     {
-                        'page': name,
+                        'page': f'Map:{name}',
                         'condition': cond,
                     }
                 ],
