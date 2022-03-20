@@ -2270,6 +2270,7 @@ class ItemsParser(SkillParserShared):
         'Metadata/Items/MicrotransactionCurrency/ProxySkinTransferPack5',
         'Metadata/Items/MicrotransactionCurrency/ProxySkinTransferPack10',
         'Metadata/Items/MicrotransactionCurrency/ProxySkinTransferPack50',
+        'Metadata/Items/MicrotransactionCurrency/TradeMarketBuyoutTabTemporary',
 
         #
         # Hideout Doodads
@@ -3418,11 +3419,13 @@ class ItemsParser(SkillParserShared):
             if not id.startswith(row['Id']):
                 continue
             map_series = row
+        # Maps are updated using the map series exporter.
+        name = self._format_map_name(base_item_type)
 
-        name = self._format_map_name(base_item_type, map_series)
+        name_with_wonky_series = self._format_map_name(base_item_type, map_series)
 
         # Each iteration of maps has it's own art
-        infobox['inventory_icon'] = name
+        infobox['inventory_icon'] = name_with_wonky_series
         # For betrayal map conflict handling is not used, so setting this to
         # false here should be fine
         infobox['drop_enabled'] = False
@@ -3775,10 +3778,15 @@ class ItemsParser(SkillParserShared):
             console(f"Processing item with rowid {base_item_type.rowid}: {base_item_type['Name']}")
         return
 
-    def _format_map_name(self, base_item_type, map_series, language=None):
+    def _format_map_name(self, base_item_type, map_series=None, language=None):
         if language is None:
             language = self._language
-        if 'Harbinger' in base_item_type['Id']:
+        if map_series is None:
+            if 'Harbinger' in base_item_type['Id']:
+                return f"{base_item_type['Name']} ({self._LANG[language][re.sub(r'^.*Harbinger', '', base_item_type['Id'])]})"
+            else:
+                return f"{base_item_type['Name']}"
+        elif 'Harbinger' in base_item_type['Id']:
             return '%s (%s) (%s)' % (
                 base_item_type['Name'],
                 self._LANG[language][re.sub(r'^.*Harbinger', '', base_item_type['Id'])],
