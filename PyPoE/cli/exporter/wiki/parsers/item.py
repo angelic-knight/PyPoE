@@ -131,7 +131,6 @@ class WikiCondition(parser.WikiCondition):
 
         # Drop restrictions
         'drop_enabled',
-        'is_drop_enabled',
         'acquisition_tags',
         'drop_areas',
         'drop_text',
