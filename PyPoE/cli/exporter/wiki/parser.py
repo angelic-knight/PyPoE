@@ -2020,7 +2020,7 @@ def find_template(wikitext, template_name):
                             bracket_count == 0:
                 pre_equal = True
                 for i in range(0, 2):
-                    template_argument[i] = template_argument[i].strip(' \n')
+                    template_argument[i] = template_argument[i].strip(' \n\t')
 
                 if template_argument[1]:
                     kw_arguments[template_argument[0]] = \

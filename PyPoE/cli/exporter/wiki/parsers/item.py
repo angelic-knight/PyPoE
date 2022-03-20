@@ -124,12 +124,14 @@ class WikiCondition(parser.WikiCondition):
         'name_list',
         'quality',
 
-        # Icons
+        # Icons & Visuals
         'inventory_icon',
         'alternate_art_inventory_icons',
+        'frame_type',
 
         # Drop restrictions
         'drop_enabled',
+        'is_drop_enabled',
         'acquisition_tags',
         'drop_areas',
         'drop_text',
@@ -147,6 +149,12 @@ class WikiCondition(parser.WikiCondition):
         'is_relic',
         'can_not_be_traded_or_modified',
         'suppress_improper_modifiers_category',
+        'is_sellable',
+        'is_in_game',
+
+        # Old MTX Categorizations
+        'cosmetic_type',
+        'cosmetic_theme',
 
         # Version information
         'release_version',
@@ -758,9 +766,9 @@ class ItemsParser(SkillParserShared):
             'Metadata/Items/MapFragments/Primordial/QuestCleansingFireKey': ' (quest)',
             'Metadata/Items/MapFragments/Primordial/QuestCleansingFireBossKey': ' (quest)',
 
-            #
+            # =================================================================
             # Royale non-gem items
-            #
+            # =================================================================
 
             'Metadata/Items/Weapons/OneHandWeapons/Wands/Wand1Royale': " (Royale)",
             'Metadata/Items/Weapons/TwoHandWeapons/Bows/Bow1': " (Royale)",
@@ -1416,6 +1424,26 @@ class ItemsParser(SkillParserShared):
         'Metadata/Items/Gems/SkillGemNewPhaseRun',
         'Metadata/Items/Gems/SkillGemNewArcticArmour',
         'Metadata/Items/Gems/SkillGemFlammableShot',
+        'Metadata/Items/Gems/SkillGemCallOfTheWild',    # Skill gem's name causes errors when exporting to wiki page since it includes [DNT]
+
+
+        #
+        # Royale Gear
+        #
+
+        'Metadata/Items/Weapons/OneHandWeapons/Wands/Wand1Royale',
+        'Metadata/Items/Weapons/TwoHandWeapons/Bows/Bow1',
+        'Metadata/Items/Rings/RingRoyale1',
+        'Metadata/Items/Rings/RingRoyale2',
+        'Metadata/Items/Rings/RingRoyale3',
+        'Metadata/Items/Rings/RingRoyale4',
+        'Metadata/Items/Amulets/AmuletRoyale1',
+        'Metadata/Items/Belts/BeltRoyale1',
+        'Metadata/Items/Belts/BeltRoyale2',
+        'Metadata/Items/Belts/BeltRoyale3',
+        'Metadata/Items/Flasks/FlaskLife1Royale',
+        'Metadata/Items/Flasks/FlaskLife2Royale',
+        'Metadata/Items/Flasks/FlaskLife3Royale',
 
         #
         # Royale Gems
@@ -2288,6 +2316,11 @@ class ItemsParser(SkillParserShared):
         'Metadata/Items/Hideout/HideoutShengjingBuildingSupplies3',
         'Metadata/Items/Hideout/HideoutShengjingBuildingSupplies4',
         'Metadata/Items/Hideout/HideoutShengjingBuildingSupplies5',
+        'Metadata/Items/Hideout/HideoutSteampunkWalls',
+        'Metadata/Items/Hideout/HideoutSteampunkWaypoint',
+        'Metadata/Items/Hideout/HideoutSteampunkVats',
+        'Metadata/Items/Hideout/HideoutSteampunkTables',
+        'Metadata/Items/Hideout/HideoutSteampunkPipes',
 
         'Metadata/Items/Hideout/HideoutLionStatueKneeling2',
 
@@ -3537,11 +3570,9 @@ class ItemsParser(SkillParserShared):
             try:
                 ot = self.ot[m_id + '.ot']
             except FileNotFoundError:
-                pass
+                ot = base_ot  # If we couldn't find an ot for the specific item, use the base ot.
             else:
-                base_ot.merge(ot)
-            finally:
-                ot = base_ot
+                ot.merge(base_ot) # If we did find an ot for the specific item, use it and add things from the base to it.
 
             if 'enable_rarity' in ot['Mods']:
                 infobox['drop_rarities_ids'] = ', '.join(ot['Mods']['enable_rarity'])
