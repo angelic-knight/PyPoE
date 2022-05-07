@@ -12892,6 +12892,22 @@ specification = Specification({
                 name='Unknown16',
                 type='int',
             ),
+            Field(
+                name='Key0',
+                type='ulong',
+            ),
+            Field(
+                name='Key1',
+                type='ulong',
+            ),
+            Field(
+                name='Key2',
+                type='ulong',
+            ),
+            Field(
+                name='Key3',
+                type='ulong',
+            ),
         ),
     ),
     'ItemisedVisualEffect.dat': File(

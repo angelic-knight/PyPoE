@@ -270,6 +270,10 @@ class PassiveSkillParser(parser.BaseParser):
 
         for passive in passives:
             data = OrderedDict()
+            # Print out the row number every 100 rows, and every 1/100th of completion
+            print_increment = len(passives)//100
+            if (passive.rowid % 100 == 0) or (passive.rowid % print_increment == 0):
+                console(f"Processing passive {passive['Id']} at {passive.rowid}")
 
             # Copy over simple fields from the .dat
             for row_key, copy_data in self._COPY_KEYS.items():
