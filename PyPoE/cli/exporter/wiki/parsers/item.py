@@ -143,6 +143,8 @@ class WikiCondition(parser.WikiCondition):
         'is_corrupted',
         'is_fractured',
         'is_synthesised',
+        'is_searing_exarch_item',
+        'is_eater_of_worlds_item',
         'is_veiled',
         'is_replica',
         'is_relic',
