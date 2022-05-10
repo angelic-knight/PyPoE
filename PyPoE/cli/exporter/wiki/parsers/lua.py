@@ -787,7 +787,24 @@ class DelveParser(GenericLuaParser):
 class HarvestTagHandler(TagHandler):
     tag_handlers = {
         'white': partial(TagHandler._basic_handler, tid='white'),
-
+        'craftingred': partial(TagHandler._basic_handler, tid='red'),
+        'craftingblue': partial(TagHandler._basic_handler, tid='blue'),
+        'craftinggreen': partial(TagHandler._basic_handler, tid='green'),
+        'craftingcaster': partial(TagHandler._basic_handler, tid='purple'),
+        'craftingphysical': partial(TagHandler._basic_handler, tid='tan'),
+        'craftingfire': partial(TagHandler._basic_handler, tid='orange'),
+        'craftinglightning': partial(TagHandler._basic_handler, tid='yellow'),
+        'craftingcold': partial(TagHandler._basic_handler, tid='blue'),
+        'craftingchaos': partial(TagHandler._basic_handler, tid='purple'),
+        'unique': partial(TagHandler._basic_handler, tid='orange'),
+        'magic': partial(TagHandler._basic_handler, tid='blue'),
+        'rare': partial(TagHandler._basic_handler, tid='yellow'),
+        'craftingspeed': partial(TagHandler._basic_handler, tid='green'),
+        'craftingattack': partial(TagHandler._basic_handler, tid='white'),
+        'craftinglife': partial(TagHandler._basic_handler, tid='red'),
+        'craftingcrit': partial(TagHandler._basic_handler, tid='blue'),
+        'craftingdefences': partial(TagHandler._basic_handler, tid='white'),
+        'enchanted': partial(TagHandler._basic_handler, tid='white'),
 
         'fuchsia': partial(TagHandler._basic_handler, tid='magenta'),
         'yellow': partial(TagHandler._basic_handler, tid='yellow'),
@@ -806,14 +823,6 @@ class HarvestParser(GenericLuaParser):
         }),
         ('Text', {
             'key': 'text',
-        }),
-        ('HarvestObjectsKey', {
-            'key': 'harvest_object',
-            'value': lambda v: v['BaseItemTypesKey']['Id']
-        }),
-        ('HarvestCraftTiersKey', {
-            'key': 'tier',
-            'value': lambda v: v.rowid,
         }),
     )
 
