@@ -270,8 +270,8 @@ class PassiveSkillParser(parser.BaseParser):
 
         for passive in passives:
             data = OrderedDict()
-            # Print out the row number every 100 rows, and every 1/100th of completion
-            print_increment = max(len(passives),100)//100
+            # Print out the row number every 100 rows, and every 1/100th of completion, with a minimum increment of 1
+            print_increment = max(len(passives)//100, 1)
             if (passive.rowid % 100 == 0) or (passive.rowid % print_increment == 0):
                 console(f"Processing passive {passive['Id']} at {passive.rowid}")
 
