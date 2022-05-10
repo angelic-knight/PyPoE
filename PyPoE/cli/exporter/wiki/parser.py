@@ -1674,7 +1674,7 @@ class BaseParser:
 
             if custom_result.missing_ids:
                 warnings.warn(
-                    f'Mod {mod["Id"]}: Missing translations for ids {custom_result.missing_ids} and values {custom_result.missing_values}',
+                    f'Mod {mod["Id"] if mod is not None else "??" }: Missing translations for ids {custom_result.missing_ids} and values {custom_result.missing_values}',
                     MissingIdentifierWarning,
                 )
 
