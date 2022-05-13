@@ -9617,8 +9617,9 @@ specification = Specification({
                 type='ref|string',
             ),
             Field(
-                name='Tier',
+                name='HarvestCraftTiersKey',
                 type='ulong',
+                key='HarvestCraftTiers.dat',
             ),
             Field(
                 name='Command',

@@ -824,6 +824,10 @@ class HarvestParser(GenericLuaParser):
         ('Text', {
             'key': 'text',
         }),
+        ('HarvestCraftTiersKey', {
+            'key': 'tier',
+            'value': lambda v: v.rowid,
+        }),
     )
 
     def main(self, parsed_args):
