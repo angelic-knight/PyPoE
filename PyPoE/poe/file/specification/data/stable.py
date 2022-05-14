@@ -18007,6 +18007,10 @@ specification = Specification({
                 name='Key2',
                 type='ulong',
             ),
+            Field(
+                name='HasAreaMissions',
+                type='bool',
+            ),
         ),
     ),
     'NPCPortraits.dat': File(
@@ -23716,6 +23720,10 @@ specification = Specification({
             Field(
                 name='Unknown52',
                 type='ulong',
+            ),
+            Field(
+                name='Unknown53',
+                type='int',
             ),
         ),
     ),

@@ -33,6 +33,7 @@ See PyPoE/LICENSE
 import os
 import time
 import re
+import sys
 from collections.abc import Iterable
 from concurrent.futures import ThreadPoolExecutor
 from requests.exceptions import HTTPError
@@ -216,6 +217,8 @@ class WikiHandler:
 
     def handle(self, *a, mwclient, result, cmdargs, parser):
         # First row is handled separately to prompt the user for his password
+        sys.stdout.reconfigure(encoding='utf-8')
+
         url = WIKIS.get(config.get_option('language'))
         if url is None:
             console(
