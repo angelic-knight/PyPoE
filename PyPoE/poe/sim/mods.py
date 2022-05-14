@@ -80,6 +80,8 @@ _translation_map = {
     # To properly support zana's innate IIQ
     MOD_DOMAIN.CRAFTED: 'map_stat_descriptions.txt',
     MOD_DOMAIN.HEIST_NPC: 'heist_equipment_stat_descriptions.txt',
+    MOD_DOMAIN.PRIMORDIAL_ALTAR: 'primordial_altar_stat_descriptions.txt',
+    MOD_DOMAIN.SENTINEL: 'sentinel_stat_descriptions.txt',
 }
 
 # =============================================================================

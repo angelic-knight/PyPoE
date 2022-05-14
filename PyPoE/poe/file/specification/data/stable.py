@@ -1445,7 +1445,7 @@ specification = Specification({
             ),
             Field(
                 name='CharactersKey',
-                type='ulong',
+                type='ref|list|ulong',
                 key='Characters.dat',
             ),
             Field(
@@ -1484,6 +1484,11 @@ specification = Specification({
             Field(
                 name='Unknown1',
                 type='int',
+            ),
+            Field(
+                name='BackgroundImage',
+                type='ref|string',
+                file_path=True,
             ),
         ),
     ),
@@ -2182,9 +2187,13 @@ specification = Specification({
                 type='int',
                 enum='MOD_DOMAIN',
             ),
+            # Field(
+            #     name='IsDropDisabled',
+            #     type='bool',
+            # ),
             Field(
-                name='IsDropDisabled',
-                type='bool',
+                name='Unknown0',
+                type='int',
             ),
             Field(
                 name='ItemVisualIdentityKey',
@@ -2212,7 +2221,7 @@ specification = Specification({
                 key='AchievementItems.dat',
             ),
             Field(
-                name='IsCorrupted',
+                name='IsUnmodifiable',
                 type='bool',
             ),
             Field(
@@ -3893,16 +3902,12 @@ specification = Specification({
                 type='bool',
             ),
             Field(
-                name='Key1',
-                type='ulong',
+                name='Keys0',
+                type='ref|list|ulong',
             ),
             Field(
                 name='Flag17',
                 type='bool',
-            ),
-            Field(
-                name='Keys0',
-                type='ref|list|ulong',
             ),
             Field(
                 name='Keys1',
@@ -3917,16 +3922,36 @@ specification = Specification({
                 type='ref|list|ulong',
             ),
             Field(
-                name='Unknown5',
-                type='int',
+                name='Keys4',
+                type='ref|list|ulong',
             ),
             Field(
                 name='Flag18',
                 type='bool',
             ),
             Field(
-                name='Key2',
+                name='Flag19',
+                type='bool',
+            ),
+            Field(
+                name='Flag20',
+                type='bool',
+            ),
+            Field(
+                name='Flag21',
+                type='bool',
+            ),
+            Field(
+                name='Flag22',
+                type='bool',
+            ),
+            Field(
+                name='Key1',
                 type='ulong',
+            ),
+            Field(
+                name='Data1',
+                type='ref|list|int',
             ),
         ),
     ),
@@ -3987,6 +4012,11 @@ specification = Specification({
             Field(
                 name='Flag1',
                 type='bool',
+            ),
+            Field(
+                name='SentinelStat', # Looks Sentinel-related.
+                type='ulong',
+                key='Stats.dat',
             ),
         ),
     ),
@@ -9185,6 +9215,22 @@ specification = Specification({
                 type='ref|generic',
                 key='GrantedEffects.dat',
             ),
+            Field(
+                name='Unknown3',
+                type='int',
+            ),
+            Field(
+                name='Unknown4',
+                type='int',
+            ),
+            Field(
+                name='Unknown5',
+                type='int',
+            ),
+            Field(
+                name='Flag4',
+                type='bool',
+            ),
         ),
     ),
     'GrantedEffectsPerLevel.dat': File(
@@ -12384,7 +12430,19 @@ specification = Specification({
             Field( # added in 3.17
                 name='Flag1',
                 type='bool',
-            )
+            ),
+            Field( # added in 3.18
+                name='Flag2',
+                type='bool',
+            ),
+            Field(
+                name='SizeDimensions', # Hybrid Flasks seems wrong for this but the rest seems to match.
+                type='ref|list|int',
+            ),
+            Field(
+                name='Flags',
+                type='ref|list|int',
+            ),
         ),
     ),
     'ItemCostPerLevel.dat': File(
@@ -15960,6 +16018,10 @@ specification = Specification({
                 name='Hash32',
                 type='int',
             ),
+            Field(
+                name='Keys0',
+                type='ref|list|ulong',
+            ),
         ),
         virtual_fields=(
             VirtualField(
@@ -18913,6 +18975,10 @@ specification = Specification({
                 name='AtlasInfluenceSet',
                 type='ulong',
                 #key='AtlasInfluenceSets.dat', FIXME: Define spec
+            ),
+            Field(
+                name='Key0', #Used by the atlas keystones. Values from 380-392
+                type='ulong',
             ),
         ),
         virtual_fields=(

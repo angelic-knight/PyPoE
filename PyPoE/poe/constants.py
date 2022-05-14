@@ -723,7 +723,8 @@ class MOD_DOMAIN(IntEnumOverride):
     EXPEDITION_RELIC = 27
     UNVEILED = 28
     PRIMORDIAL_ALTAR = 29
-    UNCRAFTABLE_OR_SOMETHING = 30 # Used in BaseItemTypes.dat, not Mods.dat.
+    SENTINEL = 30
+    MODS_DISALLOWED = 31 # Used in BaseItemTypes.dat, not Mods.dat.
 
     # legacy names
     MASTER = CRAFTED
