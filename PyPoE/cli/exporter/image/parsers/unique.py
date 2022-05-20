@@ -152,7 +152,7 @@ class UniqueExportHandler(ImageExportHandler):
             return
         else:
             for file_path in file_paths:
-                unique_name = path_to_name[file_path] + ' Inventory Icon'
+                unique_name = path_to_name[file_path] + ' inventory icon'
                 dds = os.path.join(img_path, unique_name + '.dds')
                 png = os.path.join(img_path, unique_name + '.png')
                 if not (os.path.exists(dds) or os.path.exists(png)):
