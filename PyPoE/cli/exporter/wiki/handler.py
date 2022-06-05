@@ -190,6 +190,8 @@ class WikiHandler:
             if text == page.text():
                 console('No update required. Skipping.')
                 return
+            else:
+                console(f'Update required for page. Updating')
 
             if self.cmdargs.dry_run:
                 console(text)
