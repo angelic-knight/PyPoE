@@ -44,6 +44,7 @@ Documentation
 
 # Python
 import argparse
+import sys
 
 # 3rd party
 
@@ -99,6 +100,7 @@ def main():
 
     setup_config()
 
+    sys.stdout.reconfigure(encoding='utf-8')
     DatHandler(main_sub)
     WikiHandler(main_sub)
     # In that order..
