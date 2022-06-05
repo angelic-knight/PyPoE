@@ -11692,6 +11692,10 @@ specification = Specification({
                 type='ulong',
                 #key='HideoutDoodadCategory.dat',
             ),
+            Field(
+                name='Unknown3',
+                type='int',
+            ),
         ),
     ),
     'HideoutNPCs.dat': File(
@@ -16768,6 +16772,18 @@ specification = Specification({
                 name='Flag1',
                 type='bool',
             ),
+            Field(
+                name='Keys0',
+                type='ref|list|ulong',
+            ),
+            Field(
+                name='Flag2',
+                type='bool',
+            ),
+            Field(
+                name='Flag3',
+                type='bool',
+            ),
         ),
     ),
     'MonsterProjectileAttack.dat': File(
@@ -19457,6 +19473,10 @@ specification = Specification({
             Field(
                 name='Unknown13',
                 type='int',
+            ),
+            Field(
+                name='String0',
+                type='ref|string',
             ),
         ),
     ),
