@@ -369,12 +369,13 @@ class SkillParserShared(parser.BaseParser):
         for i, row in enumerate(gepl):
             data = defaultdict()
 
-            stats = [r['Id'] for j, r in enumerate(row['StatsKeys'])
-                     if j < len(row['StatValues'])] + \
+            stats = [r['Id'] for stat_index, r in enumerate(row['StatsKeys'])
+                     if stat_index < len(row['StatValues'])] + \
                     [r['Id'] for r in row['StatsKeys2']]
             values = row['StatValues'] + ([1, ] * len(row['StatsKeys2']))
 
             # Remove 0 (unused) stats
+            # This will remove all +0 gem level entries.
             remove_ids = [
                 stat for stat, value in zip(stats, values) if value == 0
             ]
@@ -455,7 +456,11 @@ class SkillParserShared(parser.BaseParser):
             'columns': set(),
             'stats': OrderedDict(),
         }
+
+        # Grab the data from the first row of per-level gem data.
         last = level_data[0]
+        print(static)
+
         for data in level_data[1:]:
             for key in list(static['columns']):
                 if last[key] != data[key]:
@@ -514,6 +519,7 @@ class SkillParserShared(parser.BaseParser):
         geq = []
         for row in self.rr['GrantedEffectQualityStats.dat']:
             if row['GrantedEffectsKey'] == ge:
+                print(row['StatsKeys'][0]["Id"])
                 geq.append(row)
 
         geq.sort(key=lambda row: row['SetId'])
@@ -525,6 +531,8 @@ class SkillParserShared(parser.BaseParser):
 
             # Quality stat data
             stat_ids = [r['Id'] for r in row['StatsKeys']]
+            
+            # Quality Translation?
             qtr = tf.get_translation(
                 tags=stat_ids,
                 # Offset Q1000
