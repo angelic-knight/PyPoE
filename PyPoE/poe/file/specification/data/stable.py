@@ -6267,7 +6267,7 @@ specification = Specification({
                 type='int',
             ),
             Field( 
-                name='EndlessDelveMonsterLevel', #This is pobably endless delve mosnter level scaling.
+                name='EndlessDelveMonsterLevel', #This is pobably endless delve monster level scaling.
                 type='int',
             ),
         ),
@@ -7074,19 +7074,15 @@ specification = Specification({
             ),
             Field(
                 name='Unknown0',
-                type='int',
+                type='ulong',
             ),
             Field(
                 name='Unknown1',
-                type='int',
+                type='ulong',
             ),
             Field(
-                name='Unknown2',
-                type='int',
-            ),
-            Field(
-                name='Unknown3',
-                type='int',
+                name='List',
+                type='ref|list|ulong',
             ),
             Field(
                 name='EnvironmentTransitionsKey',
@@ -11672,18 +11668,6 @@ specification = Specification({
                 type='bool',
             ),
             Field(
-                name='Unknown0',
-                type='int',
-            ),
-            Field(
-                name='Unknown1',
-                type='int',
-            ),
-            Field(
-                name='Unknown2',
-                type='int',
-            ),
-            Field(
                 name='InheritsFrom',
                 type='ref|string',
                 file_path=True,
@@ -11715,6 +11699,18 @@ specification = Specification({
                 type='ulong',
                 #key='HideoutDoodadCategory.dat',
             ),
+            Field(
+                name='Unknown0',
+                type='int'
+            ),
+            Field(
+                name='Flag2',
+                type='bool',
+            ),
+            Field(
+                name='Key1',
+                type='ulong',
+            ),
         ),
     ),
     'HideoutNPCs.dat': File(
@@ -11739,23 +11735,23 @@ specification = Specification({
                 type='int',
             ),
             Field(
-                name='Unknown0',
-                type='int',
+                name='Key0',
+                type='ulong',
+            ),
+            Field(
+                name='Key1',
+                type='ulong',
             ),
             Field(
                 name='Unknown1',
                 type='int',
             ),
             Field(
-                name='Unknown2',
-                type='int',
-            ),
-            Field(
-                name='Key0',
+                name='Key2',
                 type='ulong',
             ),
             Field(
-                name='Unknown3',
+                name='Unknown2',
                 type='int',
             ),
             Field(
@@ -11763,7 +11759,7 @@ specification = Specification({
                 type='bool',
             ),
             Field(
-                name='Key1',
+                name='Key3',
                 type='ulong',
             ),
         ),
@@ -17487,6 +17483,10 @@ specification = Specification({
                 name='Unknown38',
                 type='int',
             ),
+            Field(
+                name='Unknown39',
+                type='int',
+            ),
         ),
     ),
     'MoveDaemon.dat': File(
@@ -17809,6 +17809,14 @@ specification = Specification({
             ),
             Field(
                 name='Unknown3',
+                type='int',
+            ),
+            Field(
+                name='Unknown4',
+                type='int',
+            ),
+            Field(
+                name='Unknown5',
                 type='int',
             ),
         ),
@@ -18379,8 +18387,8 @@ specification = Specification({
                 file_ext='.ot, .otc',
             ),
             Field(
-                name='Unknown0',
-                type='int',
+                name='Key0',
+                type='ulong',
             ),
             Field(
                 name='NPCMasterKey',
@@ -23538,7 +23546,7 @@ specification = Specification({
             ),
             Field(
                 name='Unknown2',
-                type='int',
+                type='ulong',
             ),
             Field(
                 name='Data0',
@@ -23564,11 +23572,11 @@ specification = Specification({
             ),
             Field(
                 name='Unknown5',
-                type='int',
+                type='ulong',
             ),
             Field(
                 name='Unknown6',
-                type='int',
+                type='ulong',
             ),
             Field(
                 name='Bosses_MonsterVarietiesKeys',
