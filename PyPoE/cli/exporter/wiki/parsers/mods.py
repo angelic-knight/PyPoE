@@ -68,6 +68,7 @@ class OutOfBoundsWarning(UserWarning):
 class ModWikiCondition(WikiCondition):
     COPY_KEYS = (
         'tier_text',
+        'mod_group',
     )
 
     NAME = 'Mod'
@@ -220,7 +221,7 @@ class ModParser(BaseParser):
 
             for k in (
                 ('Id', 'id'),
-                ('CorrectGroup', 'mod_group'),
+                #('ModGroups', 'mod_groups'),
                 ('Domain', 'domain'),
                 ('GenerationType', 'generation_type'),
                 ('Level', 'required_level'),
@@ -236,6 +237,9 @@ class ModParser(BaseParser):
                     return hstr if parameter == 'MS' else ''
 
                 data['name'] = root.handle_tags({'if': handler, 'elif': handler})
+
+            if mod['ModGroups']:
+                data['mod_groups'] = ', '.join([mod_fam['Id'] for mod_fam in mod['ModGroups']])
 
             # TODO: need to look into this before completely removing it.
 
